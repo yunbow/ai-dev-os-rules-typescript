@@ -1,0 +1,57 @@
+# {Project Name} - Claude Code Guidelines
+
+Please write code following the guidelines below for this project.
+In case of conflicts, upper sections take priority.
+
+## Development Guidelines
+
+### 1. Framework-Specific Guidelines (Highest Priority)
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/overview.md - Overview & tech stack
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/project-structure.md - Project structure
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/routing.md - Routing
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/api.md - API design
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/server-actions.md - Server Actions (ActionResult pattern)
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/client-hooks.md - Client hooks
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/form.md - Forms
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/state.md - State management
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/ui.md - UI design
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/auth.md - Authentication
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/database.md - Database
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/middleware.md - Middleware design
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/format.md - Format utilities
+- docs/ai-dev-os/03_guidelines/frameworks/nextjs/build.md - Build
+
+### 2. Common Guidelines
+- docs/ai-dev-os/03_guidelines/common/code.md - Coding conventions
+- docs/ai-dev-os/03_guidelines/common/naming.md - Naming conventions
+- docs/ai-dev-os/03_guidelines/common/validation.md - Validation
+- docs/ai-dev-os/03_guidelines/common/error-handling.md - Error handling
+- docs/ai-dev-os/03_guidelines/common/logging.md - Logging
+- docs/ai-dev-os/03_guidelines/common/security.md - Security
+- docs/ai-dev-os/03_guidelines/common/rate-limiting.md - Rate limiting
+- docs/ai-dev-os/03_guidelines/common/testing.md - Testing
+- docs/ai-dev-os/03_guidelines/common/performance.md - Performance
+- docs/ai-dev-os/03_guidelines/common/cors.md - CORS design
+- docs/ai-dev-os/03_guidelines/common/env.md - Environment variables
+- docs/ai-dev-os/03_guidelines/common/cicd.md - CI/CD
+- docs/ai-dev-os/03_guidelines/common/i18n.md - Internationalization (i18n)
+
+### 3. Decision Criteria (Refer When Unsure)
+- docs/ai-dev-os/02_decision-criteria/abstraction.md - Criteria for generalization & abstraction
+- docs/ai-dev-os/02_decision-criteria/technology-selection.md - Technology selection
+- docs/ai-dev-os/02_decision-criteria/architecture.md - Architecture decisions
+- docs/ai-dev-os/02_decision-criteria/error-strategy.md - Error strategy
+- docs/ai-dev-os/02_decision-criteria/security-vs-ux.md - Balancing security and UX
+
+### 4. Design Philosophy (Fundamental Principles)
+- docs/ai-dev-os/01_philosophy/principles.md - Design principles
+- docs/ai-dev-os/01_philosophy/mental-models.md - Thinking frameworks
+- docs/ai-dev-os/01_philosophy/anti-patterns.md - Anti-patterns
+
+### 5. Project-Specific Guidelines
+<!-- Add project-specific guidelines here -->
+<!-- Example:
+- docs/guidelines/credit-system.md - Credit system
+- docs/guidelines/external-api.md - External API integration
+- docs/guidelines/compliance.md - Legal & compliance
+-->

@@ -1,0 +1,68 @@
+{
+  "name": "{project-name}",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css}\"",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "COMMENT_core": "--- Framework ---",
+    "next": "^16",
+    "react": "^19",
+    "react-dom": "^19",
+    "server-only": "^0.0.1",
+
+    "COMMENT_auth": "--- Authentication ---",
+    "@auth/prisma-adapter": "^2",
+    "next-auth": "^5",
+
+    "COMMENT_db": "--- Database ---",
+    "@prisma/client": "^6",
+
+    "COMMENT_form": "--- Forms & Validation ---",
+    "@hookform/resolvers": "^5",
+    "react-hook-form": "^7",
+    "zod": "^4",
+
+    "COMMENT_ui": "--- UI ---",
+    "class-variance-authority": "^0.7",
+    "clsx": "^2",
+    "lucide-react": "^0.560",
+    "tailwind-merge": "^3",
+    "sonner": "^2",
+
+    "COMMENT_i18n": "--- Internationalization ---",
+    "next-intl": "^4",
+
+    "COMMENT_logging": "--- Logger ---",
+    "pino": "^10",
+    "pino-pretty": "^13",
+
+    "COMMENT_theme": "--- Theme ---",
+    "next-themes": "^0.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "^16",
+    "prettier": "^3",
+    "prettier-plugin-tailwindcss": "^0.6",
+    "prisma": "^6",
+    "tailwindcss": "^4",
+    "tw-animate-css": "^1",
+    "typescript": "^5"
+  }
+}
