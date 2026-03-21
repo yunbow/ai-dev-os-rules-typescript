@@ -164,7 +164,38 @@ If AI consistently fails to follow a specific guideline:
 3. Add the rule to the project's checklist template
 4. If still failing, consider adding a pre-commit hook or linter rule for automated enforcement
 
-## 5.4 Rule Suppression (Escape Hatch)
+## 5.4 How to Write Effective Guidelines (Benchmark-Validated)
+
+[Benchmark data](https://github.com/yunbow/ai-dev-os-benchmark) shows that guideline **specificity** — not quantity — determines AI compliance. Vague rules are ignored; specific rules achieve 100% compliance.
+
+### Rules for writing rules:
+
+| Principle | Bad (0% compliance) | Good (100% compliance) |
+|-----------|---------------------|------------------------|
+| **Name the exact method** | "Validate date ranges" | "MUST use `.refine()` to check `dueDate > new Date()`" |
+| **Name the exact pattern** | "Use exhaustive checks" | "MUST use `default: { const _exhaustive: never = status; }`" |
+| **Provide decision criteria** | "Use dynamic imports" | "SHOULD use `next/dynamic` for components with dependencies > 50KB: charts, editors, modals" |
+| **Show the anti-pattern** | "Use proper naming" | "❌ `handleDelete` ✅ `handleTaskDelete` (MUST include noun)" |
+| **Use MUST/SHOULD keywords** | "Consider using..." | "MUST validate on BOTH client and server using `zodResolver`" |
+
+### What NOT to include in guidelines:
+
+* General best practices the AI already knows (basic error handling, standard naming, RESTful API design)
+* Large Before/After code sections (benchmark shows no improvement, +55% tokens wasted)
+* YAML frontmatter or structured metadata (benchmark shows no improvement, +33% tokens wasted)
+* Abstract principles without concrete implementation guidance
+
+### The "generate → check → fix" workflow:
+
+Guidelines alone produce near-zero improvement in total code quality scores. The primary quality mechanism is **post-generation verification** via `/ai-dev-os-check`:
+
+1. Load 3-5 project-specific guideline files in CLAUDE.md (~8K tokens)
+2. AI generates code
+3. Run `/ai-dev-os-check` with a specific checklist
+4. AI reviews its own code and fixes violations
+5. This workflow scores 96.9/100 in benchmarks
+
+## 5.5 Rule Suppression (Escape Hatch)
 When a specific guideline rule is not applicable to a particular module or file, suppress it explicitly rather than ignoring it silently:
 
 * **Project-level suppression**: Add a `project-specific/` guideline that overrides the rule for specific directories or modules. The Specificity Cascade ensures project-specific rules take precedence over common rules.
