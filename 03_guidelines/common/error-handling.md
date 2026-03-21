@@ -273,6 +273,23 @@ class DomainError extends Error {
 
 * Simulate API failures / latency
 
+## 13. MUST: Error and Not-Found Boundaries (Next.js)
+
+MUST place `error.tsx` in each route group and `not-found.tsx` at the app root:
+
+```
+app/
+├── error.tsx           ← MUST: root fallback
+├── not-found.tsx       ← MUST: custom 404
+├── global-error.tsx    ← MUST: catches root layout errors
+├── (auth)/
+│   └── error.tsx       ← MUST: auth errors
+└── (protected)/
+    ├── error.tsx       ← MUST: protected area fallback
+    ├── tasks/error.tsx ← SHOULD: task-specific
+    └── teams/error.tsx ← SHOULD: team-specific
+```
+
 ## Before/After Example
 
 ```typescript

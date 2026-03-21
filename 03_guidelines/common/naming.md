@@ -163,14 +163,23 @@ form-schema.ts
 
 ---
 
-# 8. Forms (React Hook Form)
+# 8. Event Handlers and Callbacks
+
+* MUST use `handle` + noun + verb pattern: `handleTaskDelete`, `handleFormSubmit`, `handleStatusToggle`
+* ❌ `handleDelete`, `handleSubmit`, `onSubmit` — missing noun, unclear what is being acted on
+* ✅ `handleTaskDelete`, `handleProfileUpdate`, `handleInvitationAccept`
+* Props passed to child components use `on` prefix: `onTaskDelete`, `onStatusChange`
+
+---
+
+# 9. Forms (React Hook Form)
 
 * `[Domain]Form.tsx`
 * `use[Domain]Form.ts`
 
 ---
 
-# 9. WebSocket / Realtime Names
+# 10. WebSocket / Realtime Names
 
 * Event names: **snake_case**
 * Channel names: **plural**
@@ -188,7 +197,7 @@ form-schema.ts
 | DB column | snake_case (singular) |
 | URL path | kebab-case (plural) |
 | API path | REST / plural |
-| React component | PascalCase (file name also PascalCase) |
+| React component | PascalCase export, **kebab-case file name** (`task-card.tsx` exports `TaskCard`) |
 | Other files/directories | kebab-case |
 | Type / Enum | PascalCase |
 | Zod schema | PascalCase / file name is kebab-case (-schema.ts) |

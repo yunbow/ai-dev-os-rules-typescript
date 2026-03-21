@@ -157,7 +157,7 @@ const buttonVariants = cva(
 
 | Element | Required Action |
 |---------|----------------|
-| Icon button | aria-label or sr-only text |
+| Icon button | MUST have `aria-label` describing the action (e.g., `aria-label="Delete task"`, `aria-label="Open menu"`). Every `<Button>` without visible text MUST have an aria-label. |
 | Badge / Counter | Explain meaning with aria-label |
 | Dynamically updated content | aria-live="polite" |
 | Progress bar | role="progressbar" + aria-value* |

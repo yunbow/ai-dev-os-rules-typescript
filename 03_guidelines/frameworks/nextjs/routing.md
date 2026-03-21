@@ -112,9 +112,36 @@ Benefits:
 
 ---
 
-# 5. Summary (Routing / Metadata / Data Fetching)
+# 5. Error and Not-Found Boundaries
+
+## MUST: Place error.tsx in Every Route Group
+
+MUST create `error.tsx` in each route group and high-risk route segment — not just the root:
+
+```
+app/
+├── error.tsx               ← root fallback (MUST)
+├── not-found.tsx           ← custom 404 (MUST)
+├── global-error.tsx        ← catches root layout errors (MUST)
+├── (auth)/
+│   └── error.tsx           ← auth-specific errors (MUST)
+├── (protected)/
+│   ├── error.tsx           ← protected area fallback (MUST)
+│   ├── tasks/
+│   │   └── error.tsx       ← task-specific errors (SHOULD)
+│   └── teams/
+│       └── error.tsx       ← team-specific errors (SHOULD)
+```
+
+## MUST: Place not-found.tsx at Root
+
+MUST create `app/not-found.tsx` with a user-friendly 404 page. Pages that call `notFound()` (e.g., task detail, team detail) will render this component.
+
+---
+
+# 6. Summary (Routing / Metadata / Data Fetching)
 * Organize hierarchy with App Router and separate concerns at the layout level.
-* Unify UX with per-page `loading.tsx` / `error.tsx`.
+* MUST place `error.tsx` in each route group and `not-found.tsx` at root.
 * Public pages use SSG/ISR; user-specific data uses SSR + Server Actions + custom hooks.
 * Flexibly and dynamically control SEO/OG/Twitter via the Metadata API.
 * Achieve DB access that balances security and performance through Server Components.

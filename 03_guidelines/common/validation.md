@@ -6,6 +6,7 @@ This document outlines how to manage **Types** and **Validation** in a unified m
 # 1. Core Policy
 * Build a structure where types naturally synchronize in the order **Zod → Prisma → TypeScript**.
 * API schemas can be converted from **Zod → JSON Schema (for AI APIs, etc.)** for external sharing.
+* MUST validate on BOTH client and server using the SAME Zod schema. Use `zodResolver` from `@hookform/resolvers/zod` for client-side form validation with react-hook-form. Never rely on server-side validation alone.
 
 ---
 
@@ -13,7 +14,7 @@ This document outlines how to manage **Types** and **Validation** in a unified m
 
 Business logic rules that belong in Zod schemas (not just format validation):
 
-* **Cross-field constraints**: e.g., `endDate` must be after `startDate`, `maxPrice` >= `minPrice`
+* **Date range constraints**: MUST validate that future-facing dates (e.g., `dueDate`, `expiresAt`) are in the future using `.refine()`. MUST validate that `endDate` is after `startDate`
 * **Domain value boundaries**: e.g., quantity must be 1-999, discount percentage 0-100
 * **Conditional required fields**: e.g., if `paymentMethod` is "card", `cardNumber` is required
 * **Enumerated state transitions**: e.g., order status can only move from "pending" → "confirmed" → "shipped"

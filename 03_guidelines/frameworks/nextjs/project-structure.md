@@ -194,7 +194,30 @@ settings/
 
 ---
 
-# 9. Guidelines Summary
+# 9. Dynamic Import for Heavy Components
+
+SHOULD use `next/dynamic` for client components that are heavy, conditionally rendered, or below the fold:
+
+```ts
+import dynamic from "next/dynamic";
+const RichTextEditor = dynamic(() => import("./RichTextEditor"), { ssr: false });
+const CreateTaskDialog = dynamic(() => import("./CreateTaskDialog"));
+const AnalyticsChart = dynamic(() => import("./AnalyticsChart"), { ssr: false });
+```
+
+Candidates: rich text editors, chart components (recharts, chart.js), modal/dialog content, any component with dependencies > 50KB.
+
+# 10. Accessibility: Icon Buttons
+
+MUST add `aria-label` to every `<Button>` without visible text. Every icon-only button, toggle, or close button MUST describe its action:
+
+```tsx
+<Button variant="ghost" size="icon" aria-label="Delete task">
+  <TrashIcon />
+</Button>
+```
+
+# 11. Guidelines Summary
 
 - **Vertical slice structure is the default**
 - **Business logic must always be contained within features**

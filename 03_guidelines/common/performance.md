@@ -26,10 +26,32 @@ Decision rule for where to place the RSC/CC boundary:
 ---
 
 ## 2. Client Bundle Optimization (Client Components)
-### Dynamic Import of Dependencies
+### Dynamic Import of Heavy Components
+
+SHOULD use `next/dynamic` for client components that are heavy, below the fold, or conditionally rendered:
+
 ```ts
-const Editor = dynamic(() => import('./Editor'), { ssr: false });
+import dynamic from "next/dynamic";
+
+// ✅ Heavy editor loaded only when needed
+const RichTextEditor = dynamic(() => import("./RichTextEditor"), {
+  ssr: false,
+  loading: () => <div className="h-64 animate-pulse bg-muted rounded" />,
+});
+
+// ✅ Modal/dialog loaded on demand
+const CreateTaskDialog = dynamic(() => import("./CreateTaskDialog"));
+
+// ✅ Chart component (large dependency) deferred
+const AnalyticsChart = dynamic(() => import("./AnalyticsChart"), { ssr: false });
 ```
+
+Candidates for dynamic import:
+* Rich text editors, code editors, markdown renderers
+* Chart/graph components (recharts, chart.js)
+* Modal/dialog content that is not visible on initial load
+* Admin-only components on pages accessible to all users
+* Any component importing a dependency > 50KB
 
 ### Use Tree-Shakable Imports Consistently
 * `import { X } from 'lodash'` — avoid (imports entire library)

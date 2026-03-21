@@ -159,6 +159,21 @@ export async function getUserProjects(): Promise<ActionResult<Project[]>> {
 - **Production / multiple instances**: Redis (Upstash)
 - **Standard headers**: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `Retry-After`
 
+## MUST: Apply Rate Limiting to Auth Server Actions
+
+MUST apply rate limiting to ALL Server Actions that handle authentication — not just API routes. Server Actions for `register`, `login`, `requestPasswordReset`, and `resetPassword` MUST check rate limits per IP before processing:
+
+```ts
+"use server";
+export async function registerUser(formData: FormData): Promise<ActionResult> {
+  // ✅ MUST: Rate limit before any auth processing
+  const ip = (await headers()).get("x-forwarded-for") ?? "unknown";
+  const { success } = await checkRateLimit(`auth:register:${ip}`, { maxRequests: 5, windowMs: 60_000 });
+  if (!success) return { success: false, error: "Too many attempts. Try again later." };
+  // ... rest of registration logic
+}
+```
+
 ---
 
 # 3.3 Webhook Security

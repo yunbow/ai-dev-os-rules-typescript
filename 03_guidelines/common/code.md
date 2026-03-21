@@ -42,13 +42,50 @@ saveOrder()      // Has side effects - "save" signals persistence
 buildQuery()     // Pure function - "build" signals construction
 ```
 
-## 2.3 Prohibit Enum → Use Union Literals
+## 2.3 Minimize Type Assertions (`as`)
+
+MUST NOT use `as string`, `as any`, or `as unknown as T` unless absolutely necessary. Common violations:
+
+```ts
+// ❌ formData.get() returns FormDataEntryValue | null — don't cast
+const name = formData.get("name") as string;
+
+// ✅ Use Zod to parse and type-narrow
+const parsed = schema.safeParse(Object.fromEntries(formData));
+if (!parsed.success) return { success: false, error: parsed.error.flatten() };
+const { name } = parsed.data; // already typed
+```
+
+Acceptable uses of `as`: `as const` for literal types, Prisma's `globalThis as unknown as` singleton pattern.
+
+## 2.4 Prohibit Enum → Use Union Literals
 
 ```ts
 type Theme = 'dark' | 'light'
 ```
 
 Use Enum **only when external API compatibility is required**.
+
+## 2.4 Exhaustive Checks on Union Types
+
+MUST add exhaustive checks when switching on union types or Prisma enums. Use the `never` type to ensure all cases are handled at compile time:
+
+```ts
+// ✅ Exhaustive check — compiler error if a new status is added
+function getStatusLabel(status: TaskStatus): string {
+  switch (status) {
+    case "TODO": return "To Do";
+    case "IN_PROGRESS": return "In Progress";
+    case "DONE": return "Done";
+    default: {
+      const _exhaustive: never = status;
+      throw new Error(`Unhandled status: ${_exhaustive}`);
+    }
+  }
+}
+```
+
+This applies to all discriminated unions, Prisma enums (`TaskStatus`, `TeamRole`, `Priority`), and action type dispatchers.
 
 # 3. Lint Standards
 
