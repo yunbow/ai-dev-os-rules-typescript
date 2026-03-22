@@ -1,5 +1,6 @@
 # AI Dev OS Rules — TypeScript
 
+[![Lint & Link Check](https://github.com/yunbow/ai-dev-os-rules-typescript/actions/workflows/lint.yml/badge.svg)](https://github.com/yunbow/ai-dev-os-rules-typescript/actions/workflows/lint.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../../../LICENSE)
 
 > Directrices de 4 capas para proyectos TypeScript (Next.js, Node.js CLI, etc.).

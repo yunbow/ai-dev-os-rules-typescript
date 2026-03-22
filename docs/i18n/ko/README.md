@@ -1,5 +1,6 @@
 # AI Dev OS Rules — TypeScript
 
+[![Lint & Link Check](https://github.com/yunbow/ai-dev-os-rules-typescript/actions/workflows/lint.yml/badge.svg)](https://github.com/yunbow/ai-dev-os-rules-typescript/actions/workflows/lint.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../../../LICENSE)
 
 > TypeScript 프로젝트(Next.js, Node.js CLI 등)를 위한 4계층 가이드라인.
