@@ -866,7 +866,7 @@ function NavigationMenu({ items }: { items: MenuItem[] }) {
 
 ### Hook Placement
 
-```
+```text
 /src
   /hooks
     useAsyncAction.ts      # General-purpose hooks

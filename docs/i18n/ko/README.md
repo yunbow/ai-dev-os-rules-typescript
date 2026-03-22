@@ -28,7 +28,7 @@ npx ai-dev-os init --rules typescript --plugin claude-code
 <details>
 <summary>수동 설정</summary>
 
-**submodule로 추가**
+### submodule로 추가
 
 ```bash
 cd /path/to/your-project
@@ -36,17 +36,17 @@ git submodule add https://github.com/yunbow/ai-dev-os-rules-typescript.git docs/
 git submodule update --init
 ```
 
-**템플릿으로 설정 (Next.js)**
+### 템플릿으로 설정 (Next.js)
 
 ```bash
 bash docs/ai-dev-os/templates/nextjs/submodule-setup.sh
 ```
 
-**CLAUDE.md 편집**
+### CLAUDE.md 편집
 
 `templates/nextjs/CLAUDE.md.template`을 `./CLAUDE.md`로 복사하고, 프로젝트명과 고유 가이드라인을 작성합니다.
 
-**submodule 업데이트**
+### submodule 업데이트
 
 ```bash
 git submodule update --remote docs/ai-dev-os
@@ -78,7 +78,7 @@ git submodule update --remote docs/ai-dev-os
 <details>
 <summary>디렉토리 구조</summary>
 
-```
+```text
 ai-dev-os/
 ├── docs/
 │   ├── operation-guide.md        # 운영 및 기여 가이드
@@ -132,7 +132,7 @@ ai-dev-os/
 
 업데이트 정책, 프레임워크 추가 절차, 버전 관리 세부사항은 **[docs/operation-guide.md](../../../docs/operation-guide.md)**를 참조하세요.
 
-**업데이트 빈도 가이드**
+### 업데이트 빈도 가이드
 
 | 섹션 | 빈도 | 영향 범위 |
 |------|------|---------|
@@ -142,7 +142,7 @@ ai-dev-os/
 | `03_guidelines/frameworks/` | 높음 | 해당 FW 프로젝트만 |
 | `templates/` | 중간 | 새 프로젝트만 |
 
-**프레임워크 추가**
+### 프레임워크 추가
 
 새 프레임워크 (예: Remix, Nuxt, SvelteKit)를 추가하는 경우:
 

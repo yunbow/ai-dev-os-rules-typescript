@@ -1,12 +1,15 @@
 # Error Handling Guidelines
+
 This document covers **only content that does not overlap with other documents**, focusing on error design, notification, user-facing experience, log levels, and error classification.
 
 It also **systematizes error classification and handling methods**, defining what messages to display and how to log for each error type: validation errors, authentication errors, system errors, etc.
 
 ---
 
-# 1. Error Taxonomy
+## 1. Error Taxonomy
+
 ### 1.1 System Errors (Server Internal)
+
 * DB connection failures
 * Uncaught exceptions
 * Runtime exceptions
@@ -19,6 +22,7 @@ Unpredictable / unrecoverable → Notify administrators + monitor
 ---
 
 ### 1.2 Application Errors (Expected Errors)
+
 * Validation errors
 * Domain logic errors (e.g., 409 Conflict)
 * Authorization errors (insufficient permissions)
@@ -31,6 +35,7 @@ Predictable / handling required → Provide clear feedback to users
 ---
 
 ### 1.3 User Operation Errors (User Mistakes)
+
 * Missing input
 * Unexpected operations (double clicks, etc.)
 * **Input format errors preventable on the UI side** — specifically:
@@ -47,7 +52,7 @@ Display messages and guide retry on the client side (UI)
 
 ### 1.4 Error Propagation Flow
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                        Error Source                               │
 ├──────────────────────────────────────────────────────────────────┤
@@ -83,24 +88,28 @@ Display messages and guide retry on the client side (UI)
 
 **Related Documents:**
 
-- External API error classification → ※Refer to project-specific integration guidelines
-- ActionResult pattern → frameworks/nextjs/server-actions.md
-- Form error display → frameworks/nextjs/form.md
-- Toast/UI errors → frameworks/nextjs/ui.md
-- Logging → common/logging.md
+* External API error classification → ※Refer to project-specific integration guidelines
+* ActionResult pattern → frameworks/nextjs/server-actions.md
+* Form error display → frameworks/nextjs/form.md
+* Toast/UI errors → frameworks/nextjs/ui.md
+* Logging → common/logging.md
 
 ---
 
-# 2. UI / UX Error Handling
+## 2. UI / UX Error Handling
+
 ### 2.1 Global Error Page (Layout Level)
+
 * Unexpected exceptions → `app/error.tsx`
 * Provide automatic recovery (reset)
 
 ### 2.2 Page-Level Error Display
+
 * Provide fallback content
 * Example: Feed fetch failure → Display retry button
 
 ### 2.3 Component-Level Fallback
+
 * Combine Suspense + ErrorBoundary (client-side)
 * Prevent small UI breakages from cascading to the entire page
 * Forward client-side errors to server/external logging services
@@ -109,8 +118,10 @@ Display messages and guide retry on the client side (UI)
 
 ---
 
-# 3. API Error Policy (Next.js Route Handler)
+## 3. API Error Policy (Next.js Route Handler)
+
 ### 3.1 Unified Response Format
+
 ```json
 {
   "error": {
@@ -139,7 +150,7 @@ Display messages and guide retry on the client side (UI)
 
 ---
 
-# 4. Log Levels and Recording Criteria (Non-overlapping with Observability)
+## 4. Log Levels and Recording Criteria (Non-overlapping with Observability)
 
 ### 4.1 Log Levels
 
@@ -157,7 +168,7 @@ Display messages and guide retry on the client side (UI)
 
 ---
 
-# 5. Tracing ID on Error Occurrence
+## 5. Tracing ID on Error Occurrence
 
 > **Reference:** See common/logging.md for Trace ID implementation details
 
@@ -166,7 +177,7 @@ Display messages and guide retry on the client side (UI)
 * Facilitates user support inquiries
 * Example:
 
-```
+```yaml
 x-request-id: abc123
 ```
 
@@ -179,7 +190,7 @@ x-request-id: abc123
 
 ---
 
-# 6. User-Facing Message Strategy
+## 6. User-Facing Message Strategy
 
 ### 6.1 Error Message Attributes
 
@@ -191,7 +202,7 @@ Each user-facing error message should address three dimensions:
 
 ---
 
-# 7. Retry Strategy
+## 7. Retry Strategy
 
 ### 7.1 Cases for Automatic Retry
 
@@ -206,7 +217,7 @@ Each user-facing error message should address three dimensions:
 
 ---
 
-# 8. Handling Business Logic Errors (Domain Exceptions)
+## 8. Handling Business Logic Errors (Domain Exceptions)
 
 ### 8.1 Handle Domain Rule Violations with Exception Classes
 
@@ -225,7 +236,7 @@ class DomainError extends Error {
 
 ---
 
-# 9. Error Visualization (UI)
+## 9. Error Visualization (UI)
 
 ### 9.1 Lightweight Error Display via Toast
 
@@ -237,7 +248,7 @@ class DomainError extends Error {
 
 ---
 
-# 10. Fail-Safe / Graceful Degradation
+## 10. Fail-Safe / Graceful Degradation
 
 ### 10.1 Non-Essential Feature Failures Should Maintain UI
 
@@ -251,7 +262,7 @@ class DomainError extends Error {
 
 ---
 
-# 11. Debug / Developer-Facing Errors During Development
+## 11. Debug / Developer-Facing Errors During Development
 
 ### 11.1 Dev Mode Displays Detailed Errors
 
@@ -263,7 +274,7 @@ class DomainError extends Error {
 
 ---
 
-# 12. QA / Testing (Non-overlapping Perspectives)
+## 12. QA / Testing (Non-overlapping Perspectives)
 
 ### 12.1 Error Scenario Tests Should Comprise 30-50%
 
@@ -277,7 +288,7 @@ class DomainError extends Error {
 
 MUST place `error.tsx` in each route group and `not-found.tsx` at the app root:
 
-```
+```text
 app/
 ├── error.tsx           ← MUST: root fallback
 ├── not-found.tsx       ← MUST: custom 404

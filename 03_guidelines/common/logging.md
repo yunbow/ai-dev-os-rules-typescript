@@ -20,8 +20,11 @@ Next.js (Server Components / Edge Functions / Route Handlers).
 ---
 
 ## 1. Monitoring
+
 ### Vercel Monitoring
+
 **The monitoring platform with the highest integration with Next.js.**
+
 * **Vercel Analytics**
   * Web Vitals measurement (TTFB / FCP / LCP / CLS / FID)
   * Real user measurements from user devices (RUM)
@@ -35,6 +38,7 @@ Next.js (Server Components / Edge Functions / Route Handlers).
   * Cold start detection
 
 **Monitoring targets:**
+
 * Route Handlers (API)
 * Edge Middleware
 * ISR regeneration (revalidate) timing
@@ -465,7 +469,7 @@ const project = await withPerformanceLog(
 
 **Tracing architecture example:**
 
-```
+```text
 User Request
   → Next.js Route Handler
     → Server Component (RSC)
@@ -484,6 +488,7 @@ User Request
 ---
 
 ## 4. Alert Configuration
+
 ### Vercel
 
 * Edge / Serverless error rate increase
@@ -655,9 +660,10 @@ const baseLogger = pino({
 ```
 
 **Rules:**
-- Use `logger.error` instead of `console.error`
-- `console.log(process.env.XXX)` is prohibited
-- Error object stack traces are server logs only (never return to client)
+
+* Use `logger.error` instead of `console.error`
+* `console.log(process.env.XXX)` is prohibited
+* Error object stack traces are server logs only (never return to client)
 
 ---
 

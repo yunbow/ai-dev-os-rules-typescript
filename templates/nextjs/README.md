@@ -16,7 +16,7 @@
 
 ## Included Files
 
-```
+```text
 templates/nextjs/
 ├── README.md                 # This file
 ├── submodule-setup.sh        # ai-dev-os submodule setup script

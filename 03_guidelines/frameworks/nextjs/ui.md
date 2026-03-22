@@ -3,6 +3,7 @@
 > **[Replaceable]** This guide uses **Tailwind CSS + shadcn/ui (Radix UI)**. If your project uses **MUI**, **Mantine**, **Ant Design**, or other component libraries, replace the styling and component patterns accordingly. The principles (design tokens as SSOT, accessibility, component hierarchy) remain the same.
 
 ## Core Principles
+
 - **Tailwind CSS** is adopted as a low-level utility layer
 - **shadcn/ui** is used as the base for UI components (accessibility-ready, built on Radix UI)
 - Leverage unified UI tokens (colors, spacing, typography)
@@ -10,7 +11,8 @@
 - **SSOT (Single Source of Truth)** for design tokens: CSS Variables (`globals.css` / `theme.css`) serve as the single canonical definition for all design tokens (colors, spacing, typography). Both Tailwind CSS config and shadcn/ui reference these variables rather than defining their own values. This ensures that a color or spacing change in one place propagates everywhere, and enables runtime theme switching (e.g., dark mode) via CSS custom property overrides without rebuilding.
 
 ## Directory Structure Example
-```
+
+```text
 
 /src
   /styles/
@@ -22,6 +24,7 @@
 ```
 
 ## Tailwind CSS Usage Guidelines
+
 - Define spacing/colors/shadows as CSS Variables, and have `tailwind.config.js` reference them
 - Use Tailwind only for visual styling within components
 - Handle complex UI by extending or wrapping shadcn/ui components
@@ -34,14 +37,17 @@
   - Logic: Styles tightly coupled with JS/TS if/else or map should be componentized
 
 ## shadcn/ui Usage Guidelines
+
 - `/components/ui` is the home for shadcn/ui standard components — **avoid breaking changes**
 - Application-specific extensions should be wrapped in `/components/common` or `/features`
 - Composite components are extracted to `/components/common`
 - Domain-specific components are placed in `features/{domain}/components`
 
 ## CVA (class-variance-authority) Usage
+
 - **Purpose**: Centrally manage styles for components with many variations
 - **Example**:
+
 ```ts
 const buttonVariants = cva(
   "inline-flex items-center justify-center rounded-md text-sm font-medium transition",
@@ -65,18 +71,20 @@ const buttonVariants = cva(
 ```
 
 ## Dark Mode Support
-* Use Tailwind's `dark:` prefix
-* Use `next-themes` for shadcn/ui theme construction
-* Define color schemes as CSS Variables in `globals.css` / `theme.css` (SSOT)
+
+- Use Tailwind's `dark:` prefix
+- Use `next-themes` for shadcn/ui theme construction
+- Define color schemes as CSS Variables in `globals.css` / `theme.css` (SSOT)
 
 ## Responsive Design
-* Utilize Tailwind's `sm` through `2xl` breakpoints
-* Consider PC display even for mobile-first components
+
+- Utilize Tailwind's `sm` through `2xl` breakpoints
+- Consider PC display even for mobile-first components
 
 ## Accessibility (A11y)
 
-* ARIA support based on Radix UI
-* Color contrast conforming to **WCAG AA** — this means a minimum contrast ratio of 4.5:1 for normal text and 3:1 for large text (18px+ or 14px+ bold). Use tools like the Chrome DevTools color picker or axe-core to verify compliance. This is a legal requirement in many jurisdictions (ADA, EU Accessibility Act).
+- ARIA support based on Radix UI
+- Color contrast conforming to **WCAG AA** — this means a minimum contrast ratio of 4.5:1 for normal text and 3:1 for large text (18px+ or 14px+ bold). Use tools like the Chrome DevTools color picker or axe-core to verify compliance. This is a legal requirement in many jurisdictions (ADA, EU Accessibility Act).
 
 ### Required aria Attribute Patterns
 
@@ -177,9 +185,10 @@ npm install -D @axe-core/react
 ```
 
 ## Performance
-* Tailwind automatically removes unused classes
-* shadcn/ui is SSR-compatible and supports tree shaking
-* Images use lazy loading via Next.js `<Image />`
+
+- Tailwind automatically removes unused classes
+- shadcn/ui is SSR-compatible and supports tree shaking
+- Images use lazy loading via Next.js `<Image />`
 
 ---
 
@@ -1188,14 +1197,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ---
 
 ## Anti-patterns
-* Scattering shadcn/ui components → Centrally manage in `/components/ui`
-* Building large full-screen UI with Tailwind alone → Use shadcn/ui or custom components for complex UI
-* Creating UI directly in the domain layer → UI must always go in the components layer
-* Making app-specific modifications to `/components/ui` → Breaking changes are prohibited
+
+- Scattering shadcn/ui components → Centrally manage in `/components/ui`
+- Building large full-screen UI with Tailwind alone → Use shadcn/ui or custom components for complex UI
+- Creating UI directly in the domain layer → UI must always go in the components layer
+- Making app-specific modifications to `/components/ui` → Breaking changes are prohibited
 
 ## Summary
-* **Tailwind CSS** for unified low-level utilities
-* **shadcn/ui** for establishing the UI component system
-* **CVA** for managing style variations
-* **CSS Variables as SSOT to centralize tokens**
-* Achieves UI consistency, accessibility, and scalability together
+
+- **Tailwind CSS** for unified low-level utilities
+- **shadcn/ui** for establishing the UI component system
+- **CVA** for managing style variations
+- **CSS Variables as SSOT to centralize tokens**
+- Achieves UI consistency, accessibility, and scalability together

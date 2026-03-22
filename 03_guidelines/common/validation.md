@@ -1,16 +1,18 @@
 # Validation Guidelines
+
 This document outlines how to manage **Types** and **Validation** in a unified manner across large-scale Next.js applications, centered on Zod and Prisma.
 
 ---
 
-# 1. Core Policy
+## 1. Core Policy
+
 * Build a structure where types naturally synchronize in the order **Zod → Prisma → TypeScript**.
 * API schemas can be converted from **Zod → JSON Schema (for AI APIs, etc.)** for external sharing.
 * MUST validate on BOTH client and server using the SAME Zod schema. Use `zodResolver` from `@hookform/resolvers/zod` for client-side form validation with react-hook-form. Never rely on server-side validation alone.
 
 ---
 
-# 2. Business Logic Rules in Zod Schemas
+## 2. Business Logic Rules in Zod Schemas
 
 Business logic rules that belong in Zod schemas (not just format validation):
 
@@ -21,15 +23,17 @@ Business logic rules that belong in Zod schemas (not just format validation):
 * **Composite uniqueness hints**: e.g., `slug` must match `^[a-z0-9-]+$` pattern (DB enforces actual uniqueness)
 
 Rules that do NOT belong in Zod (handle in service/domain layer):
+
 * Checks requiring DB lookups (e.g., "email must not already exist")
 * Rules depending on external service state (e.g., "inventory must be available")
 * Multi-aggregate consistency checks
 
 ---
 
-# 3. Synchronizing Zod Schemas and Prisma Models
+## 3. Synchronizing Zod Schemas and Prisma Models
 
 Recommended process:
+
 1. **Write Zod first**
    UI requirements and business requirements are consolidated in Zod.
 2. **Define Prisma models based on Zod**
@@ -38,15 +42,16 @@ Recommended process:
 4. Frontend, backend, and API all use Zod-derived types.
 
 ### Single Source of Truth for Types
+
 * **Truth for input types: Zod**
 * **Truth for DB: Prisma**
 * **Truth for API Schema: Zod (→ JSON Schema generation)**
 
 ---
 
-# 4. Directory Structure (Schema / Prisma / Types)
+## 4. Directory Structure (Schema / Prisma / Types)
 
-```
+```text
 src/
  ├─ features/
  │   ├─ user/
@@ -63,23 +68,26 @@ src/
 
 ---
 
-# 5. API Schema (JSON Schema) Generation
+## 5. API Schema (JSON Schema) Generation
 
 * Zod schemas can be converted to JSON Schema,
   serving as **the foundation for AI API schemas, external APIs, and specification generation**.
 
 Benefits:
+
 * Prevents type mismatches
 * Unifies the API ecosystem
 * Facilitates automatic documentation generation
 
 ---
 
-# 6. Guidelines for Zod and Prisma Definition Duplication Risk
+## 6. Guidelines for Zod and Prisma Definition Duplication Risk
+
 Since Zod and Prisma define the same fields, there is a **risk of inconsistency when changes are made**.
 Follow these principles to mitigate:
 
 ### Principles
+
 1. **Input constraints (validation) → Zod is the sole source of truth**
 2. **Structural constraints (DB integrity) → Prisma is the sole source of truth**
 3. Shared domain rules (enum / MinMax / Regex) should be **defined in both Zod and Prisma** where possible
@@ -106,7 +114,7 @@ Follow these principles to mitigate:
 
 ---
 
-# 7. Summary (Zod + Prisma)
+## 7. Summary (Zod + Prisma)
 
 * Types from UI → API → DB naturally synchronize via Zod → Prisma
 * JSON Schema generation unifies external API schemas as well

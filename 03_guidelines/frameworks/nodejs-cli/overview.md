@@ -3,9 +3,11 @@
 > **Note:** The technology stack below is a sample configuration. Replace libraries based on your project's requirements. Files marked with `[Replaceable]` in this directory contain library-specific patterns — update the corresponding files when switching libraries.
 
 ## Purpose
+
 This is a guideline for designing robust, maintainable CLI tools with Node.js and TypeScript, balancing usability, extensibility, testability, and developer productivity.
 
 ## Technology Stack
+
 - Node.js (ES Module)
   - CLI Argument Parsing
   - Subcommand Routing
@@ -28,6 +30,7 @@ This is a guideline for designing robust, maintainable CLI tools with Node.js an
 | Logging | Custom module logger | pino, winston, consola | — |
 
 ## Basic Principles
+
 - Single-responsibility subcommands with clear input/output contracts
 - Fail fast with meaningful error messages and exit codes
 - Support both interactive and non-interactive (CI) environments

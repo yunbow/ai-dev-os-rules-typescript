@@ -6,7 +6,7 @@ A prompt template for systematically investigating and fixing bugs.
 
 ## Prompt
 
-```
+```markdown
 Please investigate and fix the following bug.
 
 ## Investigation Procedure

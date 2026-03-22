@@ -17,7 +17,7 @@ It leverages the `Intl` API to provide unified, locale-aware formatting across t
 
 ## 2. Directory Structure
 
-```
+```text
 src/
   lib/
     format/
@@ -102,6 +102,7 @@ export function formatRelativeTime(
 ```
 
 **Key points**:
+
 - Uses `Intl.RelativeTimeFormat` to auto-generate locale-appropriate "ago" / "from now" expressions
 - `numeric: "auto"` enables natural expressions like "yesterday" and "tomorrow"
 
@@ -150,6 +151,7 @@ formatJPY(1234)      // "¥1,234"     (no decimals)
 ```
 
 **Key points**:
+
 - Uses `Intl.NumberFormat` with `style: "currency"`
 - Sets appropriate decimal places per currency (JPY: 0, USD: 2)
 - Locale-appropriate currency symbol placement ($1,234 vs 1,234 USD)
@@ -237,6 +239,7 @@ interface CurrencyFormatOptions extends NumberFormatOptions {
 ```
 
 **Key points**:
+
 - All options are optional (have default values)
 - Extend base types with extends to maintain type consistency
 

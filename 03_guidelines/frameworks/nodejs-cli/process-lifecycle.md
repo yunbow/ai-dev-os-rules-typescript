@@ -4,7 +4,7 @@ This document defines how to manage exit codes, signal handling, stdin/stdout, a
 
 ---
 
-# 1. Exit Codes
+## 1. Exit Codes
 
 ## 1.1 Standard Exit Codes
 
@@ -33,13 +33,14 @@ try {
 ```
 
 ## 1.3 Rules
+
 - **Always exit explicitly** — do not let the process hang
 - **Use `process.exit()` only in the CLI layer** — core logic throws errors, CLI layer decides exit code
 - **Never use `process.exit()` in library code** — it prevents proper cleanup and makes code untestable
 
 ---
 
-# 2. Signal Handling
+## 2. Signal Handling
 
 ## 2.1 Graceful Shutdown
 
@@ -66,7 +67,7 @@ process.on("SIGTERM", cleanup);  // kill command
 
 ---
 
-# 3. Error Hierarchy
+## 3. Error Hierarchy
 
 ## 3.1 Base Error Class
 
@@ -121,7 +122,7 @@ if (error instanceof AppError) {
 
 ---
 
-# 4. Standard I/O
+## 4. Standard I/O
 
 ## 4.1 Channel Separation
 
@@ -151,7 +152,7 @@ function createModuleLogger(moduleName: string, options: { level: LogLevel }): L
 
 ---
 
-# 5. Binary Entry Point
+## 5. Binary Entry Point
 
 ## 5.1 package.json Configuration
 
@@ -197,7 +198,7 @@ import { Command } from "commander";
 
 ---
 
-# 6. Resource Cleanup
+## 6. Resource Cleanup
 
 ## 6.1 Cleanup Pattern
 
@@ -224,7 +225,7 @@ try {
 
 ---
 
-# 7. Summary
+## 7. Summary
 
 - **Exit codes: 0 (success), 1 (partial failure), 2 (fatal)**
 - **Handle SIGINT/SIGTERM** for graceful shutdown

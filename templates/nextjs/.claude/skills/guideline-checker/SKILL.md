@@ -44,23 +44,27 @@ Based on the paths of changed files, identify which guidelines to check:
 ### 3. Check Items by Guideline
 
 #### common/security.md (Security)
+
 - [ ] Are authentication checks (`auth()`) performed in Server Actions?
 - [ ] Is input validated with Zod?
 - [ ] Are there IDOR protections (resource ownership checks)?
 - [ ] Is sensitive information excluded from logs?
 
 #### common/code.md (Coding Conventions)
+
 - [ ] Is the `any` type not used? (`unknown` should be used instead)
 - [ ] Are function arguments and return types explicitly typed?
 - [ ] Are Union Literals used instead of Enums?
 - [ ] Are reasons documented in comments when disabling ESLint rules?
 
 #### common/error-handling.md (Error Handling)
+
 - [ ] Are error responses in a unified format (ActionResult<T>, etc.)?
 - [ ] Are internal errors not directly exposed to users?
 - [ ] Are appropriate log levels (ERROR/WARN/INFO) used?
 
 #### common/naming.md (Naming Conventions)
+
 - [ ] Are file names in kebab-case? (PascalCase is acceptable for components)
 - [ ] Are function names in camelCase?
 - [ ] Are type names in PascalCase?

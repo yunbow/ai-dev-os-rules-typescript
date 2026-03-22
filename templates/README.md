@@ -64,7 +64,7 @@ Apply updates to existing projects manually (review the diff and merge).
 
 ## Adding New Templates
 
-```
+```text
 templates/{framework}/
 ├── README.md               # Template description
 ├── submodule-setup.sh      # Submodule setup script

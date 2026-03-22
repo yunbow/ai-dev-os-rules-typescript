@@ -1,7 +1,9 @@
 # Naming Convention Guidelines
+
 This document defines **unified naming conventions** for large-scale Next.js applications.
 
 Scope:
+
 * Prisma models and field names
 * Database physical names (table and column names)
 * URL paths
@@ -14,11 +16,14 @@ Prioritizes readability, searchability, and scalability.
 
 ---
 
-# 1. General Principles
+## 1. General Principles
+
 ### Consistency
+
 Unify naming within each domain. Do not mix different naming conventions.
 
 ### English Naming Thresholds
+
 * **Variable/field names**: 1-3 words, max 30 characters (e.g., `createdAt`, `orderItemCount`)
 * **Function names**: verb + noun, 2-4 words, max 40 characters (e.g., `fetchUserProfile`, `calculateTotalPrice`)
 * **Type/interface names**: 1-3 words describing the shape (e.g., `UserProfile`, `OrderSummary`)
@@ -27,7 +32,8 @@ Unify naming within each domain. Do not mix different naming conventions.
 
 ---
 
-# 2. Prisma Relation Names
+## 2. Prisma Relation Names
+
 * **1:1 / N:1 → singular**
 * **1:N / N:M → plural (to clearly indicate arrays)**
 * lowerCamelCase
@@ -45,7 +51,9 @@ orderItems  OrderItem[]
 ```
 
 ---
-# 3. Database Physical Names (SQLite)
+
+## 3. Database Physical Names (SQLite)
+
 ## Table Names
 
 * **snake_case**
@@ -53,40 +61,44 @@ orderItems  OrderItem[]
 
 Examples:
 
-```
+```text
 users
 blog_posts
 order_items
 ```
 
 ## Column Names
+
 * **snake_case**
 * Singular
 
 Examples:
 
-```
+```text
 created_at
 user_id
 is_active
 ```
 
 ## Constraint Names
+
 This guideline adopts the convention of prefixing with the constraint type (pk, fk, idx) for readability and searchability.
 
 Rationale:
+
 * **Constraints are visually grouped by type when listed**
 * **Easy to filter by prefix in tools and logs**
 * Can be more readable than the common "orders_user_id_fk" format
 
 Naming rules:
+
 * Primary key: `pk_<table>`
 * Foreign key: `fk_<table>_<ref_table>`
 * Index: `idx_<table>_<column>`
 
 Examples:
 
-```
+```text
 pk_users
 fk_orders_users
 idx_blog_posts_author_id
@@ -94,14 +106,15 @@ idx_blog_posts_author_id
 
 ---
 
-# 4. URL Path Naming (Next.js App Router)
+## 4. URL Path Naming (Next.js App Router)
+
 * **kebab-case**
 * Resources in **plural**
 * No verbs (REST)
 
 Examples:
 
-```
+```text
 /users
 /users/[id]
 /blog/posts
@@ -110,7 +123,8 @@ Examples:
 
 ---
 
-# 5. API Route Naming (/api)
+## 5. API Route Naming (/api)
+
 * Follow REST principles
 * Resource names in **plural**
 * Operations expressed through HTTP methods
@@ -118,7 +132,7 @@ Examples:
 
 Examples:
 
-```
+```text
 /api/users
 /api/users/[id]
 /api/orders
@@ -127,20 +141,22 @@ Examples:
 
 ---
 
-# 6. Service / Repository
+## 6. Service / Repository
+
 * `[domain].service.ts`
 * `[domain].repository.ts`
 
 Examples:
 
-```
+```text
 user.service.ts
 order.repository.ts
 ```
 
 ---
 
-# 7. Validation Schema (Zod)
+## 7. Validation Schema (Zod)
+
 * Schema names: **PascalCase**
 * File names: **unified to kebab-case + -schema.ts**
 
@@ -155,7 +171,7 @@ export const CreateUserSchema = z.object({
 
 File name examples:
 
-```
+```text
 user-schema.ts
 order-schema.ts
 form-schema.ts
@@ -163,7 +179,7 @@ form-schema.ts
 
 ---
 
-# 8. Event Handlers and Callbacks
+## 8. Event Handlers and Callbacks
 
 * MUST use `handle` + noun + verb pattern: `handleTaskDelete`, `handleFormSubmit`, `handleStatusToggle`
 * ❌ `handleDelete`, `handleSubmit`, `onSubmit` — missing noun, unclear what is being acted on
@@ -172,21 +188,21 @@ form-schema.ts
 
 ---
 
-# 9. Forms (React Hook Form)
+## 9. Forms (React Hook Form)
 
 * `[Domain]Form.tsx`
 * `use[Domain]Form.ts`
 
 ---
 
-# 10. WebSocket / Realtime Names
+## 10. WebSocket / Realtime Names
 
 * Event names: **snake_case**
 * Channel names: **plural**
 
 ---
 
-# Summary
+## Summary
 
 | Target | Naming Convention |
 | --- | --- |

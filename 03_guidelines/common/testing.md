@@ -1,11 +1,15 @@
 # Testing Guidelines
+
 This document defines testing strategy for large-scale Next.js applications, focusing on project-specific decisions and non-obvious patterns.
 
 ---
 
-# 1. Testing Core Policy
+## 1. Testing Core Policy
+
 ## 1. Prioritize Testing Critical Logic
+
 Critical logic = code where a bug has **high business cost or security impact**:
+
 - **Financial**: Pricing calculations, subscription billing, payment flows ({Payment Service})
 - **Security**: Authentication (NextAuth), authorization decisions, IDOR prevention
 - **Data integrity**: DB queries (Prisma) that modify state, cascade deletes
@@ -13,15 +17,18 @@ Critical logic = code where a bug has **high business cost or security impact**:
   → If a bug in this code would require immediate hotfix or cause revenue loss, it is critical.
 
 ## 2. Server-side logic uses **unit tests + API integration tests** as the baseline
+
 - Server Actions / Route Handler logic is unit-testable
 - **Note DB environment differences**
   - Both production and test environments use SQLite. Use a separate SQLite file (or in-memory DB) for testing.
   - Add a migration dry run to CI/CD to verify schema consistency.
 
 ## 3. UI testing priority: **E2E > Integration > Unit**
+
 - UI tests are costly, so only guarantee "critical user experience areas" with E2E
 
 ## 4. Introduce Contract Tests for external service integrations
+
 - For external APIs like payment APIs, AI APIs, and RSS,
   adopt Contract Tests that are resilient to specification changes in real services
 - **Note**: Contract Tests serve a different purpose from MSW (detecting external service specification changes)
@@ -29,12 +36,15 @@ Critical logic = code where a bug has **high business cost or security impact**:
 
 ---
 
-# 2. Layer-Specific Testing Strategy
+## 2. Layer-Specific Testing Strategy
+
 ## 1. Domain Logic (Unit Test)
+
 - Zod schemas must always have standalone schema tests
 
 ### Example: Pricing logic / data transformation
-```
+
+```text
 features/billing/domain/
 features/calendar/domain/
 ```
@@ -42,7 +52,9 @@ features/calendar/domain/
 ---
 
 ## 2. API / Server Actions (Integration Test)
+
 ### Key Points
+
 - Switch Prisma to **a test-specific SQLite / in-memory DB**
 - Mock external APIs (payment / AI API, etc.) with MSW or mocks
 - Add migration dry runs to CI/CD
@@ -146,14 +158,18 @@ it("project creation succeeds", async () => {
 ---
 
 ## 3. UI / Pages (E2E Test)
+
 ### Critical Path Criteria
+
 An E2E test is "critical path" if it covers a flow where **failure blocks the user from completing their primary goal** or **causes financial/security harm**:
+
 - Authentication flow (login / sign up) — users cannot access the app without it
 - Payment flow — revenue-impacting
 - Dashboard main navigation — primary entry point after auth
 - Critical CRUD operations (e.g., task create → update → delete) — core value proposition
 
 ### Security Test Playbook
+
 - Attempt to access other users' data by ID replacement after login
 - CSRF token exploitation
 - XSS / Injection via form input
@@ -161,7 +177,9 @@ An E2E test is "critical path" if it covers a flow where **failure blocks the us
 ---
 
 ## 4. Contract Test (External Services)
-### Payment API / AI API, etc.
+
+### Payment API / AI API, etc
+
 - Payment/subscription API contracts, Webhook payloads, SDK type definition consistency
 - Implement Consumer-Driven Contracts with Pact, etc.
 - Purpose: detect specification changes in external services
@@ -169,21 +187,26 @@ An E2E test is "critical path" if it covers a flow where **failure blocks the us
 
 ---
 
-# 3. Performance & Quality Assurance
+## 3. Performance & Quality Assurance
+
 ## 1. Performance Test
+
 - API Route load testing with k6
 - SSR response measurement on Vercel / Amplify
 
 ## 2. Automated Lighthouse Score Measurement
+
 - Integrate into CI/CD, auto-measure on PR
 
 ## 3. Security Test
+
 - Integrate static/dynamic analysis tools (ZAP, SonarQube) into CI/CD
 - Detect vulnerabilities in authentication, authorization, and payment flows
 
 ---
 
-# 4. Test Target Priority
+## 4. Test Target Priority
+
 1. Authentication (NextAuth)
 2. Payments ({Payment Service})
 3. DB (Prisma) + Route Handler
@@ -194,8 +217,9 @@ An E2E test is "critical path" if it covers a flow where **failure blocks the us
 
 ---
 
-# 5. Directory Structure
-```
+## 5. Directory Structure
+
+```text
 tests/
   unit/
     calendar/
@@ -220,7 +244,8 @@ src/
 
 ---
 
-# 6. Summary
+## 6. Summary
+
 - Increase change resilience for external APIs (payment, AI API, etc.) with Contract Tests
 - MSW-based internal API mocking strategy
 - E2E covers only flows where failure blocks users or causes financial/security harm

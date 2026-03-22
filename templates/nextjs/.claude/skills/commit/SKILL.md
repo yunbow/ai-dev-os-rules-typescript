@@ -26,7 +26,7 @@ git log --oneline -5
 
 ### 2. Commit Message Format
 
-```
+```text
 <type>(<scope>): <description>
 
 - [Change 1]

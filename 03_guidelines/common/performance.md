@@ -11,21 +11,26 @@ This document covers only performance optimization items that **do not clearly o
 ---
 
 ## 1. Rendering & Server Components Optimization
+
 ### Use Server Components by Default
-* Implement as Server Components whenever possible to minimize bundle size.
-* Only add `use client` when UI interaction is required.
+
+- Implement as Server Components whenever possible to minimize bundle size.
+- Only add `use client` when UI interaction is required.
 
 ### RSC → CC "Hole Punching" Pattern
+
 Decision rule for where to place the RSC/CC boundary:
-* **Use RSC** when the component only displays data (no onClick, onChange, useState, useEffect)
-* **Use CC** when the component needs browser APIs or user interaction
-* At the boundary: fetch data in RSC, pass only the **minimal serializable props** to child Client Components
-* Do not fetch from CC (to prevent duplicate fetches and bundle bloat)
-* If a CC needs server data, lift the fetch to the nearest RSC ancestor and pass it down
+
+- **Use RSC** when the component only displays data (no onClick, onChange, useState, useEffect)
+- **Use CC** when the component needs browser APIs or user interaction
+- At the boundary: fetch data in RSC, pass only the **minimal serializable props** to child Client Components
+- Do not fetch from CC (to prevent duplicate fetches and bundle bloat)
+- If a CC needs server data, lift the fetch to the nearest RSC ancestor and pass it down
 
 ---
 
 ## 2. Client Bundle Optimization (Client Components)
+
 ### Dynamic Import of Heavy Components
 
 SHOULD use `next/dynamic` for client components that are heavy, below the fold, or conditionally rendered:
@@ -47,18 +52,21 @@ const AnalyticsChart = dynamic(() => import("./AnalyticsChart"), { ssr: false })
 ```
 
 Candidates for dynamic import:
-* Rich text editors, code editors, markdown renderers
-* Chart/graph components (recharts, chart.js)
-* Modal/dialog content that is not visible on initial load
-* Admin-only components on pages accessible to all users
-* Any component importing a dependency > 50KB
+
+- Rich text editors, code editors, markdown renderers
+- Chart/graph components (recharts, chart.js)
+- Modal/dialog content that is not visible on initial load
+- Admin-only components on pages accessible to all users
+- Any component importing a dependency > 50KB
 
 ### Use Tree-Shakable Imports Consistently
-* `import { X } from 'lodash'` — avoid (imports entire library)
-* `import debounce from 'lodash/debounce'` — preferred (imports only the function)
+
+- `import { X } from 'lodash'` — avoid (imports entire library)
+- `import debounce from 'lodash/debounce'` — preferred (imports only the function)
 
 ### Avoid Large Libraries Like Moment.js
-* Day.js / date-fns are recommended.
+
+- Day.js / date-fns are recommended.
 
 ---
 
@@ -85,8 +93,9 @@ module.exports = {
 Forgetting this can cause build errors or disable optimization.
 
 ### Design With CDN (Vercel / Amplify) Caching in Mind
-* Static images: bundle at build time
-* Dynamic images: set Cache-Control headers
+
+- Static images: bundle at build time
+- Dynamic images: set Cache-Control headers
 
 ---
 
@@ -101,7 +110,7 @@ const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 
 ### Use SVGs Instead of Icon Fonts
 
-* shadcn/ui + lucide-react is recommended.
+- shadcn/ui + lucide-react is recommended.
 
 ---
 
@@ -109,15 +118,15 @@ const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 
 ### Recommend Static CSS-Based Approaches
 
-* Tailwind CSS
-* CSS Modules
-* Vanilla Extract
+- Tailwind CSS
+- CSS Modules
+- Vanilla Extract
   → **Runtime CSS-in-JS is discouraged due to increased bundle size and client-side JS bloat**
 
 ### Reduce Unused CSS
 
-* Use Tailwind's `content` configuration to eliminate unused classes
-* For Sass/CSS Modules, use PurgeCSS or similar tools to remove unused CSS
+- Use Tailwind's `content` configuration to eliminate unused classes
+- For Sass/CSS Modules, use PurgeCSS or similar tools to remove unused CSS
 
 ---
 
@@ -143,8 +152,8 @@ return new Response(JSON.stringify(data), {
 
 ### Proper Use of useCallback / useMemo
 
-* Use only when the computation takes **>2ms per render** or the component renders lists of **100+ items** — profile with React DevTools before adding memoization
-* **Ensure dependency array accuracy**
+- Use only when the computation takes **>2ms per render** or the component renders lists of **100+ items** — profile with React DevTools before adding memoization
+- **Ensure dependency array accuracy**
 
 ```tsx
 // ❌ Creates a new object every render
@@ -161,17 +170,21 @@ useEffect(() => {
 ```
 
 ### Prevent Props Drilling
-* Overusing Context can be counterproductive; **local context pattern** is recommended.
+
+- Overusing Context can be counterproductive; **local context pattern** is recommended.
 
 ### Stabilize Keys
-* Prohibit index keys
-* Use unique IDs
+
+- Prohibit index keys
+- Use unique IDs
 
 ---
 
 ## 8. List / Table / Infinite Scroll Optimization
+
 ### Use Virtualization
-* react-window / react-virtualized
+
+- react-window / react-virtualized
 
 ### Partial Suspense Splitting
 
@@ -188,46 +201,62 @@ useEffect(() => {
 ### Avoid Excessive Use of JSON.parse / JSON.stringify
 
 ### Use Web Workers for Heavy Processing
-* Markdown parsing
-* Image processing
-* Audio processing
+
+- Markdown parsing
+- Image processing
+- Audio processing
 
 ---
 
 ## 10. Network Optimization
+
 ### Chunk Prefetching
+
 ### Reduce Excessive API Calls
-* Minimize fetching in Client Components; aggregate on the RSC side.
+
+- Minimize fetching in Client Components; aggregate on the RSC side.
 
 ---
 
 ## 11. SEO + Web Vitals
+
 ### Measure Web Vitals in CI
-* Monitor LCP / FID / CLS
+
+- Monitor LCP / FID / CLS
 
 ### CLS Countermeasures
-* Display skeletons
-* Fix heights for images, cards, and ads
+
+- Display skeletons
+- Fix heights for images, cards, and ads
 
 ---
 
 ## 12. Mobile Optimization
+
 ### Ensure Tap Targets Meet Minimum Size (44px+)
+
 ### Prohibit Hover-Dependent UI
-* Reduce unnecessary client-side JS.
+
+- Reduce unnecessary client-side JS.
 
 ---
 
 ## 13. Edge Functions / CDN Placement
+
 ### Use Edge APIs for Parts That Don't Require Authentication
+
 ### Static HTML Generation (SSG / ISR)
-* Maximize Edge cache utilization.
+
+- Maximize Edge cache utilization.
 
 ---
 
 ## 14. Profiling
+
 ### React Profiler
+
 ### Chrome Performance Panel
+
 ### Next.js Bundle Analyzer
 
 ```bash

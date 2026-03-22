@@ -15,7 +15,7 @@ Since Middleware executes at the beginning of the request lifecycle, it serves a
 
 ## 2. Middleware Processing Flow
 
-```
+```text
 Request received
   │
   ▼
@@ -55,6 +55,7 @@ Request received
 ## 3. Request ID Generation and Propagation
 
 ### Purpose
+
 - **Distributed tracing**: Link server logs, API logs, and external API calls to a single request
 - **User support**: Users can provide the requestId to help identify logs for inquiries
 
@@ -76,6 +77,7 @@ response.headers.set("x-request-id", requestId);
 ```
 
 ### Rules
+
 - While `crypto.randomUUID()` is available in Edge Runtime, a **short ID with prefix** is advantageous for readability and log searching
 - Attach requestId to redirect responses as well
 
@@ -110,6 +112,7 @@ if (isSanctionedCountry(country)) {
 ```
 
 **Country code source (priority order)**:
+
 1. `x-vercel-ip-country` (automatically set by Vercel)
 2. `cf-ipcountry` (automatically set by Cloudflare)
 3. Custom headers (AWS ALB, etc.)
@@ -146,6 +149,7 @@ export function isAdminIpAllowed(clientIp: string | null): boolean {
 ```
 
 **Key points**:
+
 - Specify via environment variable `ADMIN_ALLOWED_IPS` as comma-separated values (e.g., `203.0.113.1,192.168.1.0/24`)
 - **CIDR notation support**: Allows subnet-level permissions
 - No restriction when unset (convenience for development environments)
@@ -167,6 +171,7 @@ if (
 ```
 
 **Key points**:
+
 - **Admin IPs bypass**: Normal access is possible from IPs included in `ADMIN_ALLOWED_IPS`
 - Prevent infinite redirects to the maintenance page itself
 - Switchable via environment variable only (no deployment needed)
@@ -233,6 +238,7 @@ if (isLoggedIn && requiresTwoFactor && !twoFactorVerified) {
 **Why a cookie for 2FA status instead of the session/JWT**: The 2FA verification happens *after* the initial login, so the session already exists with `requiresTwoFactor: true`. Storing the verification result back into the JWT would require re-signing the token on every 2FA completion, which is not possible in Edge Middleware (no DB access). A short-lived, httpOnly, secure cookie provides a lightweight signal that the second factor has been verified for this browser session, without modifying the JWT.
 
 **Flow**:
+
 1. Login succeeds → Set `requiresTwoFactor: true` in session
 2. Middleware redirects to 2FA verification page
 3. 2FA code input and verification succeeds → Set `2fa-verified` cookie
@@ -255,6 +261,7 @@ if (pathname === "/login" && isLoggedIn) {
 ## 6. CSP (Content Security Policy) Nonce
 
 ### Purpose
+
 - Prevent XSS attacks
 - Eliminate `'unsafe-inline'` and transition to nonce-based script authorization
 
@@ -302,6 +309,7 @@ export function buildCspHeader(nonce: string): string {
 ```
 
 **Key points**:
+
 - Allow `'unsafe-eval'` in development environments (required for HMR)
 - Establish trust chain with `'strict-dynamic'`
 - Explicitly add external API domains to `connect-src`
@@ -337,6 +345,7 @@ export const config = {
 ```
 
 **Paths to exclude**:
+
 - `/api/*` — API Routes have their own authentication
 - `/_next/static/*` — Static assets
 - `/_next/image/*` — Image optimization
@@ -346,7 +355,7 @@ export const config = {
 
 ## 9. Security Module Placement
 
-```
+```text
 src/
   middleware.ts                           # Middleware body (invocation only)
   lib/
@@ -358,6 +367,7 @@ src/
 ```
 
 **Principles**:
+
 - `middleware.ts` **does not contain decision logic** (invocation only)
 - Decision and generation logic is placed in `/lib/security/`
 - Unit tests are performed on individual modules

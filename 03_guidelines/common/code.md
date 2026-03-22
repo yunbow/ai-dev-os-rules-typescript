@@ -2,7 +2,8 @@
 
 This guideline defines the **TypeScript coding standards and static analysis tool policies** to be enforced across the entire project.
 
-# 1. Key Principles
+## 1. Key Principles
+
 * **Prioritize readability and maintainability**
   Write code that communicates intent, rather than being concise or abbreviated.
 * **Enforce type safety**
@@ -10,9 +11,10 @@ This guideline defines the **TypeScript coding standards and static analysis too
 * **Ensure quality through static analysis**
   Enforce formatting and code quality through tooling, not manual effort.
 
-# 2. TypeScript Coding Standards
+## 2. TypeScript Coding Standards
 
 ## 2.1 Type Definition Placement
+
 * Project type definitions **must be separated into dedicated files**
 * Use `type` for data structures, `interface` for contracts expected to change
 
@@ -87,13 +89,13 @@ function getStatusLabel(status: TaskStatus): string {
 
 This applies to all discriminated unions, Prisma enums (`TaskStatus`, `TeamRole`, `Priority`), and action type dispatchers.
 
-# 3. Lint Standards
+## 3. Lint Standards
 
 ## 3.1 Rule Sets
 
 Recommended sets:
 
-```
+```text
 @typescript-eslint/recommended
 import/order
 no-unused-vars
@@ -113,7 +115,7 @@ Rules to enforce:
 
 ## 3.2 unused-imports
 
-```
+```text
 eslint-plugin-unused-imports
 ```
 
@@ -121,11 +123,11 @@ Auto-removal is required.
 
 ## 3.3 Import Order Rules
 
-```
+```text
 builtin → external → internal → relative
 ```
 
-# 4. Prettier
+## 4. Prettier
 
 ## 4.1 Configuration
 
@@ -151,7 +153,7 @@ const config = {
 | `tabWidth` | `2` | Standard indentation width |
 | `prettier-plugin-tailwindcss` | - | Auto-sorts Tailwind classes |
 
-# 5. CI / Git Hooks Integration
+## 5. CI / Git Hooks Integration
 
 Static analysis and formatting **must not rely on manual execution**.
 Always automate the following:
@@ -161,7 +163,7 @@ Always automate the following:
 
 ---
 
-# 6. Comment Standards
+## 6. Comment Standards
 
 * Do not use comments to explain logic
 * Only document intent, side effects, and exceptional conditions
@@ -175,7 +177,7 @@ Always automate the following:
 
 ---
 
-# 7. Code Reuse Patterns
+## 7. Code Reuse Patterns
 
 ## 7.1 Server Actions Factory Pattern
 

@@ -7,13 +7,16 @@ This document adopts **Prisma** as the ORM and uses **SQLite** as the database.
 ---
 
 ## Architecture Policy
+
 ### 1. Data Model Design Centered on schema.prisma
+
 - All data models are defined in `prisma/schema.prisma`
 - Model changes **must always be accompanied by migrations**
 - Models are **centralized by domain** rather than "vertical slices (feature-based)".
   This is a deliberate trade-off: Prisma uses a single-file schema architecture, so splitting models across feature directories would require manual concatenation or tooling workarounds. Centralizing in one file means cross-domain relationships (foreign keys, many-to-many) are immediately visible and validated by Prisma. The downside is that the schema file grows large — mitigate this with clear comment sections per domain and consistent model ordering.
 
 ### 2. Prisma Client Usage Policy
+
 - Strictly maintain "one instance per process" for the Client
 - In Next.js, manage it in `lib/prisma.ts` as follows
 
@@ -41,37 +44,42 @@ export default prisma;
 
 ## Database Design
 
-* DB: **SQLite**
-* Reasons:
-  * No installation required, fast setup
-  * Easy snapshot creation and testing
-  * Fast migration verification
-  * Easy deployment (file-based)
+- DB: **SQLite**
+- Reasons:
+  - No installation required, fast setup
+  - Easy snapshot creation and testing
+  - Fast migration verification
+  - Easy deployment (file-based)
 
 ---
 
 ## Prisma Migrate Operational Rules
+
 ### 1. Model Changes → Always Generate a Migration
-```
+
+```bash
 npx prisma migrate dev --name <change-name>
 ```
 
 ### 2. Run migrate deploy in Production
-```
+
+```bash
 npx prisma migrate deploy
 ```
 
 ### 3. Zod Integration on Model Changes
-* Update Zod schema when Prisma schema changes
-* Maintain type safety for API Routes / Server Actions
+
+- Update Zod schema when Prisma schema changes
+- Maintain type safety for API Routes / Server Actions
 
 ---
 
 ## Query Best Practices
 
 ### Error Handling
-* Absorb Prisma Client Errors in Route Handlers and API layer
-* Display appropriate UI based on error codes (e.g., P2002)
+
+- Absorb Prisma Client Errors in Route Handlers and API layer
+- Display appropriate UI based on error codes (e.g., P2002)
 
 ### Safety Guidelines for Raw SQL Usage
 
@@ -160,7 +168,8 @@ const recentLogs = await prisma.loginHistory.findMany({
 });
 ```
 
-**Limiting nested includes**
+### Limiting nested includes
+
 ```ts
 // ✔ Apply take to nested relations as well
 const items = await prisma.item.findMany({
@@ -182,7 +191,7 @@ const items = await prisma.item.findMany({
 
 ### Utilizing Composite Indexes
 
-**Add composite indexes for frequently combined conditions**
+### Add composite indexes for frequently combined conditions
 
 ```prisma
 model TaskItem {
@@ -199,7 +208,8 @@ model TaskItem {
 
 ### Optimizing OR Condition Queries
 
-**NG: Complex OR conditions (reduced index efficiency)**
+### NG: Complex OR conditions (reduced index efficiency)
+
 ```ts
 // ❌ OR conditions do not effectively use indexes
 const presets = await prisma.preset.findMany({
@@ -212,7 +222,8 @@ const presets = await prisma.preset.findMany({
 });
 ```
 
-**OK: Split queries and combine results**
+### OK: Split queries and combine results
+
 ```ts
 // ✔ Split into independent queries (indexes are effective)
 const [ownPresets, purchasedPresets] = await Promise.all([
@@ -237,7 +248,8 @@ const combined = [...ownPresets, ...purchasedPresets]
 
 ### Documentation Requirement
 
-**Document the rationale for limit values in comments**
+### Document the rationale for limit values in comments
+
 ```ts
 // Performance note: This query may return up to N records
 // Be mindful of memory usage when changing limit values
@@ -259,16 +271,19 @@ const results = await prisma.table.findMany({
 ---
 
 ## Prisma Code Generation and Type Usage
-* Link Prisma Client types with Zod schemas to ensure **type consistency (Single Source of Truth)**.
-* Do not return `@prisma/client` model types directly;
-  **it is recommended to format them through a DTO (Data Transfer Object) layer**
+
+- Link Prisma Client types with Zod schemas to ensure **type consistency (Single Source of Truth)**.
+- Do not return `@prisma/client` model types directly;
+
+### it is recommended to format them through a DTO (Data Transfer Object) layer
+
   → Easier to maintain API compatibility
 
 ---
 
 ## Prisma Directory Structure
 
-```
+```text
 /prisma
   ├─ schema.prisma
   ├─ migrations/
@@ -282,10 +297,10 @@ src/
 
 ## Benefits
 
-* Type-safe and robust DB access
-* Schema-centric DB changes are easy to track
-* Simple file-based operation with SQLite
-* Excellent compatibility with Next.js
+- Type-safe and robust DB access
+- Schema-centric DB changes are easy to track
+- Simple file-based operation with SQLite
+- Excellent compatibility with Next.js
 
 ---
 
@@ -299,7 +314,7 @@ src/
 | DB integrity constraints | **Prisma** | PK, FK, unique, not null, etc. |
 | Type generation source | **Both** | Zod for input types, Prisma for DB types |
 
-```
+```text
 External input → Validate with Zod → Save with Prisma
                 ↑                    ↑
            Source of truth      Source of truth

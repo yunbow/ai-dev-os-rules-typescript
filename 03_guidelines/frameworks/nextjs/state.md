@@ -19,7 +19,7 @@ This project adopts an architecture centered on **Server Actions + custom hooks*
 
 Data flows in one direction: Server Actions produce `ActionResult<T>`, custom hooks consume and manage that state, and components render from the hook's output. Components never write back to Server Actions except through hook-provided `execute`/`refetch` functions.
 
-```
+```typescript
 Server Actions (data fetching / mutations)
     ↓ ActionResult<T>
 Custom Hooks (state management / loading / error / pagination)
@@ -40,7 +40,7 @@ Client Component (UI rendering / event handling)
 
 ## 2. Directory Structure
 
-```
+```text
 src/
   hooks/                    # General-purpose custom hooks
     useAsyncAction.ts       # Async action execution and state management
@@ -107,6 +107,7 @@ const { execute: deleteItem, loading: deleting } = useAsyncAction({
 ```
 
 **Features**:
+
 - Automatically handles `ActionResult<T>`
 - Optional toast notifications on success/error
 - Stabilizes callbacks with `useRef` (avoids dependency array issues)
@@ -138,6 +139,7 @@ const {
 ```
 
 **Features**:
+
 - Automatically resets to page 1 and re-fetches when `params` change
 - Automatically re-fetches on page change
 - `refetchWithReset()` for re-fetching with page reset
@@ -167,6 +169,7 @@ const {
 ```
 
 **Features**:
+
 - Built-in search debouncing (default 300ms)
 - Automatically resets page on filter change
 - Sort toggling (same key toggles asc/desc, different key starts with desc)
@@ -196,6 +199,7 @@ const {
 ```
 
 **Features**:
+
 - `"all"` and empty strings are not considered active
 - Controls UI display with `hasActiveFilters` / `activeFilterCount`
 - Customizable reset values via `resetValues`
@@ -277,6 +281,7 @@ export function useProjectContext(): ProjectContextValue {
 ```
 
 **Rules**:
+
 - Context is placed in `features/*/context/`
 - Provider is set up in the feature's Layout
 - Always provide a `useContext` wrapper hook (with null check)

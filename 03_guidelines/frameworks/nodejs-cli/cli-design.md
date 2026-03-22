@@ -6,13 +6,13 @@ This document defines how to design subcommands, options, arguments, and user in
 
 ---
 
-# 1. Subcommand Design
+## 1. Subcommand Design
 
 ## 1.1 One Command = One Responsibility
 
 Each subcommand should have a single, well-defined purpose.
 
-```
+```text
 my-tool analyze   # Run analysis pipeline
 my-tool resume    # Resume interrupted analysis
 my-tool compare   # Compare multiple results
@@ -53,7 +53,7 @@ program.parse();
 
 ---
 
-# 2. Option & Argument Design
+## 2. Option & Argument Design
 
 ## 2.1 Option Conventions
 
@@ -94,7 +94,7 @@ For variadic arguments (multiple values as separate args):
 
 ---
 
-# 3. Input Validation
+## 3. Input Validation
 
 ## 3.1 Fail Fast
 
@@ -127,11 +127,12 @@ Validate inputs at the CLI layer before passing to core logic:
 
 ---
 
-# 4. Help & Documentation
+## 4. Help & Documentation
 
 ## 4.1 Auto-Generated Help
 
 Commander generates `--help` automatically from descriptions. Ensure:
+
 - Every command has `.description()`
 - Every option has a description string
 - Default values are specified (shown in help)
@@ -151,7 +152,7 @@ Examples:
 
 ---
 
-# 5. Output Design
+## 5. Output Design
 
 ## 5.1 Output Channels
 
@@ -174,7 +175,7 @@ This separation allows piping: `my-tool analyze --url ... > result.json`
 
 For long-running operations, display step-based progress:
 
-```
+```text
 [1/4] Collecting data...
 [2/4] Preprocessing...
 [3/4] Summarizing... (15.2s)
@@ -189,7 +190,7 @@ Pipeline complete:
 
 ---
 
-# 6. Interactive vs Non-Interactive
+## 6. Interactive vs Non-Interactive
 
 ## 6.1 Detection
 
@@ -218,7 +219,7 @@ if (config.pause && process.stdin.isTTY) {
 
 ---
 
-# 7. Summary
+## 7. Summary
 
 - **One subcommand = one responsibility**
 - **Fail fast** with clear error messages at the CLI layer

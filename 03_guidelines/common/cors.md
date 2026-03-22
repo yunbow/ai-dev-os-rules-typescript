@@ -16,7 +16,7 @@ It provides a unified CORS utility for securely accepting requests from external
 
 ## 2. Directory Structure
 
-```
+```text
 src/
   lib/
     api/
@@ -55,6 +55,7 @@ const getAllowedOrigins = (): string[] => {
 ```
 
 **Key points:**
+
 - Specify via comma-separated `ALLOWED_ORIGINS` environment variable (e.g., `https://app.example.com,https://admin.example.com`)
 - When `ALLOWED_ORIGINS` is not set, falls back to: localhost:3000, localhost:3001, `NEXT_PUBLIC_APP_URL`, and auto-detected `VERCEL_URL`
 - Automatically allow `VERCEL_URL` during Vercel deployments
@@ -93,7 +94,7 @@ export function validateOrigin(
 
 ### Wildcard Subdomains
 
-```
+```bash
 ALLOWED_ORIGINS=https://app.example.com,*.example.com
 ```
 
@@ -144,6 +145,7 @@ export function corsHeaders(
 ```
 
 **Key points:**
+
 - `Access-Control-Allow-Origin` returns the request's origin as-is (not `*`)
 - When `credentials: true`, `*` cannot be used (browser will reject it)
 - `Max-Age` caches preflight results (default: 24 hours)
@@ -232,6 +234,7 @@ export function validateTimestamp(
 ```
 
 **Key points:**
+
 - Reject not only past but also future timestamps (timestamp tampering prevention)
 - Default tolerance is 5 minutes (accounting for network latency)
 - Supports both ISO 8601 strings and Unix milliseconds

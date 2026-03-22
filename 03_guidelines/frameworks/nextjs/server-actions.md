@@ -429,7 +429,7 @@ export async function getProjects(
 
 ## 8. Directory Structure
 
-```
+```text
 /src
   /lib
     /actions

@@ -1,4 +1,5 @@
 $NOTE
+
 # Design Principles
 
 This document defines the fundamental principles that underpin all projects.
@@ -10,7 +11,7 @@ It articulates the "why" behind our guidelines and serves as the ultimate refere
 
 All design decisions are made in this order of priority.
 
-```
+```text
 1. Correctness   — Guarantee correct behavior through types and validation
 2. Observability  — Ensure the running state can be observed and traced
 3. Pragmatism     — Achieve goals with the minimum necessary complexity
@@ -18,7 +19,7 @@ All design decisions are made in this order of priority.
 
 ### 1. Correctness
 
-**"Eliminate code that fails at runtime by catching it at compile time."**
+> *"Eliminate code that fails at runtime by catching it at compile time."*
 
 - Security is built into the architecture, not bolted on after the fact
 
@@ -26,7 +27,7 @@ All design decisions are made in this order of priority.
 
 ### 2. Observability
 
-**"Understand what is happening in production without redeploying."**
+> *"Understand what is happening in production without redeploying."*
 
 - Assign a Trace ID to every request and propagate it across layers
 - Automatically mask PII. Never expose secrets in logs
@@ -36,7 +37,7 @@ All design decisions are made in this order of priority.
 
 ### 3. Pragmatism
 
-**"Don't build it until you need it. When you need it, build it the simplest way possible."**
+> *"Don't build it until you need it. When you need it, build it the simplest way possible."*
 
 - Copy-paste is not evil. Don't abstract until duplication appears in 3 places. The number 3 is deliberate: with 1 occurrence you have no pattern; with 2 you see similarity but may be misled by coincidence; with 3 you have enough evidence to extract a correct, stable abstraction. Abstracting at 2 often produces the *wrong* abstraction because you lack sufficient examples to identify the true commonality
 - Convention over Configuration
@@ -65,7 +66,7 @@ All design decisions are made in this order of priority.
 
 ## Security Philosophy: Zero Trust
 
-**"Trust no input. Every user is a potential attacker."**
+> *"Trust no input. Every user is a potential attacker."*
 
 1. **API Layer**: Zod validation, CORS, rate limiting
 2. **Auth Layer**: Session validation, IDOR checks (always verify ownership for resource access)
@@ -78,7 +79,7 @@ Apply the principle of least privilege to everything (DB users, API scopes, feat
 
 ## Approach to Errors
 
-**"Don't try to prevent every failure — detect, contain, and communicate them."**
+> *"Don't try to prevent every failure — detect, contain, and communicate them."*
 
 - Errors fall into 3 categories: System (unexpected), Application (expected), User (input mistakes)
 - Do not leak internal error details to the UI (return sanitized messages)
@@ -89,7 +90,7 @@ Apply the principle of least privilege to everything (DB users, API scopes, feat
 
 ## UI/Design Philosophy
 
-**"Constraints create consistency, and consistency creates speed."**
+> *"Constraints create consistency, and consistency creates speed."*
 
 - Constraint-based design with Tailwind CSS (spacing scale, color palette)
 - CSS Variables serve as the Single Source of Truth

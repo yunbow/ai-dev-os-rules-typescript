@@ -8,6 +8,7 @@ It covers **authentication flow, session management, API protection, RSC support
 ---
 
 ## 1. Core Principles (App Router + NextAuth.js v5)
+
 - Adopt **Auth.js (NextAuth.js) v5**, the official recommendation for App Router
 - **Excellent compatibility with Server Components, enabling secure session access via `auth()`**
 - **Minimize front-end session management (Server-first approach)**: By performing auth checks on the server, you avoid exposing session tokens and role data to client-side JavaScript. This eliminates an entire class of XSS-based session theft attacks, prevents the UI "flash" of unauthenticated content, and ensures that authorization decisions cannot be bypassed by manipulating client-side state.
@@ -18,7 +19,7 @@ It covers **authentication flow, session management, API protection, RSC support
 
 ## 2. Directory Structure
 
-```
+```text
 /src
   /lib/auth/
     config.ts          # NextAuth.js configuration (providers, callbacks)
@@ -30,6 +31,7 @@ It covers **authentication flow, session management, API protection, RSC support
 ---
 
 ## 3. NextAuth.js Configuration (config.ts)
+
 ### Standard Configuration Using Prisma Adapter
 
 ```ts
@@ -94,8 +96,9 @@ export const authConfig = {
 ---
 
 ## 4. Authentication Flow (Server-first)
-* Perform authentication in Server Components / Server Actions to prevent unauthenticated state "flash" on the client side.
-* Example of a page requiring authentication:
+
+- Perform authentication in Server Components / Server Actions to prevent unauthenticated state "flash" on the client side.
+- Example of a page requiring authentication:
 
 ```ts
 import { auth } from "@/lib/auth";
@@ -127,6 +130,7 @@ export const config = {
 ---
 
 ## 6. Protecting API Routes / Server Actions
+
 ### API Route
 
 ```ts
@@ -157,55 +161,61 @@ export async function updateProfile(data: FormData) {
 ---
 
 ## 7. Role-Based Access Control (RBAC)
-* Roles are consolidated in **session.user.role**
-* Final check is done server-side; UI serves only as supplementary display
+
+- Roles are consolidated in **session.user.role**
+- Final check is done server-side; UI serves only as supplementary display
 
 ```ts
 const session = await auth();
 if (session?.user.role !== "admin") throw new Error("Forbidden");
 ```
 
-* **Immediate role reflection via JWT version number mechanism**:
+- **Immediate role reflection via JWT version number mechanism**:
   The problem this solves: JWTs are stateless and valid until they expire. If an admin revokes a user's role, the user's existing JWT still contains the old role and remains valid. The `sessionVersion` counter in the DB is incremented whenever a user's role changes. On each JWT refresh, the callback compares the token's version against the DB version — if they differ, the token is updated with the new role. This provides near-real-time role revocation without requiring a full DB session strategy.
 
 ---
 
 ## 8. Session Strategy
-* **JWT Strategy (Recommended)**: Easy to scale, suited for distributed environments
-* DB Strategy: Consider when advanced session management is required
+
+- **JWT Strategy (Recommended)**: Easy to scale, suited for distributed environments
+- DB Strategy: Consider when advanced session management is required
 
 ---
 
 ## 9. Deployment Environment Considerations
+
 ### Vercel
-* Officially recommended environment for NextAuth.js
-* Edge Runtime support
-* Be mindful of Prisma connection limits (PlanetScale / Neon recommended)
+
+- Officially recommended environment for NextAuth.js
+- Edge Runtime support
+- Be mindful of Prisma connection limits (PlanetScale / Neon recommended)
 
 ---
 
 ## 10. Security Policy
-* CSRF protection is auto-generated
-* Cookie `secure`, `httpOnly`, `sameSite` are automatically configured per environment
-* OAuth redirect URI is fixed per environment
-* Passwords are hashed with argon2
+
+- CSRF protection is auto-generated
+- Cookie `secure`, `httpOnly`, `sameSite` are automatically configured per environment
+- OAuth redirect URI is fixed per environment
+- Passwords are hashed with argon2
 
 ---
 
 ## 11. Prohibited Practices (Anti-patterns)
-* Directly parsing sessions in Routes without using auth()
-* Tampering with role information on the front end
-* Using DB session strategy for large-scale use cases
+
+- Directly parsing sessions in Routes without using auth()
+- Tampering with role information on the front end
+- Using DB session strategy for large-scale use cases
 
 ---
 
 ## 12. Summary
 
-* **Server-first + NextAuth.js v5** is optimal for large-scale development
-* Unify authentication, permissions, and sessions on the server side
-* Use `auth()` securely in API Routes / Server Actions
-* Stable operation on Vercel
-* Systematized RBAC, session strategy, and API protection
-* **JWT Callback-based role synchronization** with on-demand session invalidation for immediate response to permission changes
-* Clear initial registration and linking policies for multi-provider usage
-* Explicitly configure session `maxAge` / `updateAge`
+- **Server-first + NextAuth.js v5** is optimal for large-scale development
+- Unify authentication, permissions, and sessions on the server side
+- Use `auth()` securely in API Routes / Server Actions
+- Stable operation on Vercel
+- Systematized RBAC, session strategy, and API protection
+- **JWT Callback-based role synchronization** with on-demand session invalidation for immediate response to permission changes
+- Clear initial registration and linking policies for multi-provider usage
+- Explicitly configure session `maxAge` / `updateAge`

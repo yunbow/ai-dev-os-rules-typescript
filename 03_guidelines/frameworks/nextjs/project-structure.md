@@ -1,7 +1,9 @@
 # Project Structure Guidelines
+
 This document summarizes the directory policies and architecture guidelines for designing large-scale web applications centered on Next.js large-scale applications.
 
-# 1. Overall Principles
+## 1. Overall Principles
+
 - Adopt **vertical slicing (feature-based) as the base structure**
   → Group UI / API / DB / types / validation / hooks / services per feature
 - **Horizontal slicing is limited to shared functionality only**
@@ -9,9 +11,9 @@ This document summarizes the directory policies and architecture guidelines for 
 
 ---
 
-# 2. Directory Structure
+## 2. Directory Structure
 
-```
+```text
 src/
 ├─ app/                    # Next.js App Router (page entry points)
 │  ├─ (public)/            # Public pages (no authentication required)
@@ -83,13 +85,13 @@ src/
 
 ---
 
-# 3. Vertical Slice Design (Feature-based Architecture)
+## 3. Vertical Slice Design (Feature-based Architecture)
 
 ## 3.1 Internal Structure of a Feature
 
 Select subdirectories based on the scale of the feature. Not all are required.
 
-```
+```text
 features/<feature-name>/
 ├─ components/       # Feature-specific UI components (required)
 ├─ server/           # Server Actions (required)
@@ -106,14 +108,16 @@ features/<feature-name>/
 ## 3.2 Structure Examples by Scale
 
 **Small-scale feature** (auth, contact, etc.):
-```
+
+```text
 auth/
 ├─ components/       # Login form, etc.
 └─ server/           # Authentication Server Actions
 ```
 
 **Medium-scale feature** (settings, admin, etc.):
-```
+
+```text
 settings/
 ├─ components/
 ├─ schema/
@@ -122,7 +126,8 @@ settings/
 ```
 
 **Large-scale feature** (core project domain, etc.):
-```
+
+```text
 {domain}/
 ├─ components/       # 50+ components
 ├─ hooks/            # 30+ hooks
@@ -137,13 +142,14 @@ settings/
 ```
 
 ### Benefits
+
 - Related code is consolidated in one place → easier to understand
 - Extensions do not pollute other directories
 - Easy to refactor or delete on a per-feature basis
 
 ---
 
-# 4. Horizontal Slicing (Shared Layers)
+## 4. Horizontal Slicing (Shared Layers)
 
 | Folder | Clear Role |
 |--------|--------|
@@ -159,8 +165,10 @@ settings/
 
 ---
 
-# 5. Dependency Rules (Important)
+## 5. Dependency Rules (Important)
+
 ## 5.1 Prohibited Practices
+
 - **Cross-feature dependencies are prohibited** — if two features need shared logic, extract it to `lib/` or `components/shared/`
 - **lib → features dependencies are prohibited**
 - **components → features dependencies are prohibited**
@@ -168,14 +176,15 @@ settings/
 
 ---
 
-# 6. Server Actions Placement Rules (Strict)
+## 6. Server Actions Placement Rules (Strict)
+
 - **Must be placed in `features/*/server/`**
 - `src/server/` is **limited to the bare minimum for app-wide concerns** such as authentication and authorization
 - Business logic should be consolidated in `services/`, and Server Actions should serve **only as the invocation gateway**
 
 ---
 
-# 7. Next.js Role Separation Enhancement
+## 7. Next.js Role Separation Enhancement
 
 | Element | Responsibility |
 |-----|------|
@@ -186,7 +195,7 @@ settings/
 
 ---
 
-# 8. Guidelines for Extension
+## 8. Guidelines for Extension
 
 1. Create a `src/features/<new-feature>` directory
 2. Keep components / server / schema, etc. **self-contained within it**
@@ -194,7 +203,7 @@ settings/
 
 ---
 
-# 9. Dynamic Import for Heavy Components
+## 9. Dynamic Import for Heavy Components
 
 SHOULD use `next/dynamic` for client components that are heavy, conditionally rendered, or below the fold:
 
@@ -207,7 +216,7 @@ const AnalyticsChart = dynamic(() => import("./AnalyticsChart"), { ssr: false })
 
 Candidates: rich text editors, chart components (recharts, chart.js), modal/dialog content, any component with dependencies > 50KB.
 
-# 10. Accessibility: Icon Buttons
+## 10. Accessibility: Icon Buttons
 
 MUST add `aria-label` to every `<Button>` without visible text. Every icon-only button, toggle, or close button MUST describe its action:
 
@@ -217,7 +226,7 @@ MUST add `aria-label` to every `<Button>` without visible text. Every icon-only 
 </Button>
 ```
 
-# 11. Guidelines Summary
+## 11. Guidelines Summary
 
 - **Vertical slice structure is the default**
 - **Business logic must always be contained within features**

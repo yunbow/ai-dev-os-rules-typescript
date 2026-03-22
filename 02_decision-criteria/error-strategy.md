@@ -1,4 +1,5 @@
 $NOTE
+
 # Error Strategy Decision Criteria
 
 Defines error handling policies, retry decisions, and how to communicate errors to users.
@@ -7,7 +8,7 @@ Defines error handling policies, retry decisions, and how to communicate errors 
 
 ## Fundamental Principle
 
-**"Don't try to prevent all failures — detect, contain, and communicate them."**
+> *"Don't try to prevent all failures — detect, contain, and communicate them."*
 
 ---
 
@@ -23,7 +24,7 @@ Defines error handling policies, retry decisions, and how to communicate errors 
 
 The boundary between System and Application errors: "Could the developer have predicted it?" means — is this error a known, enumerable case in the domain logic? If yes (e.g., "user not found", "insufficient balance"), it's an Application error that should be handled with a specific code path. If no (e.g., database connection dropped, OOM), it's a System error that gets generic handling.
 
-```
+```text
 Error Occurs
   │
   ├─ Is this a known, enumerable domain case?
@@ -51,7 +52,7 @@ Error Occurs
 
 ### Retry Implementation Criteria
 
-```
+```text
 Should we retry?
   │
   ├─ Is the status code 5xx?
@@ -133,7 +134,7 @@ type ActionResult<T> =
 
 ### Server Action Checklist
 
-```
+```typescript
 ✅ Use withAction() wrapper
 ✅ Authentication check with requireAuth()
 ✅ Resource ownership check with requireOwnership() (IDOR prevention)

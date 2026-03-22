@@ -2,7 +2,7 @@
 
 This guideline defines the **standards for working with AI coding assistants** to maximize quality and minimize rework.
 
-# 1. Key Principles
+## 1. Key Principles
 
 * **Rules over instructions**
   Do not rely on natural language instructions alone. Codify expectations as explicit rules in guidelines.
@@ -13,9 +13,10 @@ This guideline defines the **standards for working with AI coding assistants** t
 * **Less is more**
   Too many rules degrade AI performance. A poorly written or overly verbose context file can produce worse results than no context file at all. Only include rules that address real, observed problems.
 
-# 2. Prompting and Context
+## 2. Prompting and Context
 
 ## 2.1 Context Management
+
 * MUST reference AI Dev OS guidelines from CLAUDE.md / .cursorrules / AGENTS.md — do not inline rules in prompts
 * MUST keep the context file (CLAUDE.md, etc.) under 500 lines — split into referenced files if longer
 * MUST NOT include sensitive information (API keys, credentials, PII) in prompts or context files
@@ -24,6 +25,7 @@ This guideline defines the **standards for working with AI coding assistants** t
 * MUST NOT include vague rules ("write clean code", "handle errors appropriately") — these override the model's good defaults with ambiguity
 
 ### Why fewer rules can be better
+
 Research shows that AI models perform worse when given too many context rules. The model's attention is diluted across all rules, causing it to miss important ones. A focused set of 10-15 high-impact rules (approximately 300-500 lines) consistently outperforms an exhaustive set of 30+ rules. Add rules only when you observe a recurring problem that the AI fails to solve on its own.
 
 ### Two-tier context strategy: Static context + Dynamic checks
@@ -34,40 +36,47 @@ Research shows that AI models perform worse when given too many context rules. T
 | **Dynamic checks** | `ai-dev-os-check`, `ai-dev-os-scan`, `ai-dev-os-review` | Invoked on demand | Verify against ALL guidelines (30+) at review time |
 
 **Static context (CLAUDE.md) should include:**
-- Framework-specific overview (architecture, patterns)
-- Security rules (always critical, even if rarely violated)
-- Error handling patterns (most common AI mistake area)
-- Naming conventions (consistency across codebase)
-- Project structure (AI needs this for correct file placement)
+
+* Framework-specific overview (architecture, patterns)
+* Security rules (always critical, even if rarely violated)
+* Error handling patterns (most common AI mistake area)
+* Naming conventions (consistency across codebase)
+* Project structure (AI needs this for correct file placement)
 
 **Static context should NOT include:**
-- Every guideline file (causes attention dilution)
-- Rules the AI already follows by default (e.g., "use const instead of let" — modern models know this)
-- Rarely relevant rules (rate-limiting, CORS, CI/CD — check these via `ai-dev-os-scan` instead)
+
+* Every guideline file (causes attention dilution)
+* Rules the AI already follows by default (e.g., "use const instead of let" — modern models know this)
+* Rarely relevant rules (rate-limiting, CORS, CI/CD — check these via `ai-dev-os-scan` instead)
 
 **Why not auto-remove low-frequency rules from CLAUDE.md?**
 Low violation frequency does not mean low importance. Security rules with zero violations are *working* — removing them would cause immediate regression. Instead, curate the static context manually at setup time, and rely on dynamic checks for comprehensive coverage.
 
 ### Token cost awareness
+
 The static context (8-10 guideline files referenced in CLAUDE.md) typically adds approximately 3,000-5,000 tokens to each request. This is a small fraction of modern model context windows (128K-1M tokens) but can accumulate across many requests. To minimize overhead:
+
 * Keep CLAUDE.md references to 10-15 files (the two-tier strategy above)
 * Use `ai-dev-os-report` to measure your actual token footprint
 * Dynamic checks (`ai-dev-os-check`, `ai-dev-os-scan`) do not add to per-request cost — they run on demand
 
 ## 2.2 Task Scoping
+
 * MUST break large tasks into small, focused requests (one file or one function per request)
 * MUST specify the exact file path and function name when requesting changes to existing code
 * SHOULD keep code examples minimal (1-3 lines inline ❌/✅). Avoid adding large Before/After sections — benchmark data shows they cause attention dilution without improving compliance
 
 ## 2.3 Effective Prompting Patterns
+
 * **Do**: "Add auth check using the ActionResult pattern defined in server-actions.md"
 * **Don't**: "Add authentication" (too vague — AI will guess the implementation pattern)
 * **Do**: "Refactor this function following the early-return pattern in code.md section 2.3"
 * **Don't**: "Clean up this code" (no specific standard referenced)
 
-# 3. AI-Generated Code Review
+## 3. AI-Generated Code Review
 
 ## 3.1 Mandatory Review Checklist
+
 When reviewing AI-generated code, MUST check:
 
 * [ ] **Security**: No hardcoded secrets, proper input validation, no SQL injection vectors
@@ -79,6 +88,7 @@ When reviewing AI-generated code, MUST check:
 * [ ] **Tests**: If the change is testable, tests are included or updated
 
 ## 3.2 Common AI Pitfalls
+
 AI coding assistants frequently make these mistakes. Be especially vigilant:
 
 | Pitfall | What to Check | Guideline Reference |
@@ -100,14 +110,16 @@ AI coding assistants frequently make these mistakes. Be especially vigilant:
 | **Medium** | Business logic, API endpoints, data models | Functional review, spot-check implementation |
 | **Low** | UI components, formatting, documentation | Quick scan for obvious issues |
 
-# 4. Code Structure for AI Consistency
+## 4. Code Structure for AI Consistency
 
 ## 4.1 Predictable File Structure
+
 * MUST follow the project structure defined in project-structure.md — AI generates more consistent code when file locations are predictable
 * MUST use barrel exports (index.ts) for feature modules — AI can import correctly without guessing paths
 * MUST NOT create deeply nested directories (max 4 levels) — AI struggles with deeply nested paths
 
 ## 4.2 Function Design for AI
+
 * MUST keep functions ≤ 30 lines — AI generates better code when functions are focused
 * MUST use early returns — AI is more likely to handle edge cases correctly with early-return patterns
 * MUST define types explicitly for function parameters and return values — AI uses them as contracts
@@ -139,26 +151,32 @@ export async function processRefund(req: any) {
 ```
 
 ## 4.3 Pattern Consistency
+
 * MUST use the same pattern for similar operations across the codebase (e.g., all CRUD operations follow the same structure)
 * MUST NOT mix patterns in the same module (e.g., callbacks and async/await, different error handling approaches)
 * SHOULD create a reference implementation for each pattern, then tell AI "follow the pattern in [file]"
 
-# 5. AI Dev OS Integration
+## 5. AI Dev OS Integration
 
 ## 5.1 Rule Harvesting Workflow
+
 After every code review where AI-generated code was corrected:
+
 1. Identify what the AI got wrong
 2. Ask: "Is this a one-off mistake or a recurring pattern?"
 3. If recurring, extract it as a rule using `ai-dev-os-extract` (or equivalent)
 4. Add the rule to the appropriate L3 guideline
 
 ## 5.2 Guideline Effectiveness Tracking
+
 * SHOULD track which guidelines are most frequently violated by AI — these may need clearer wording or examples
 * SHOULD track which guidelines AI follows perfectly — these confirm the rule format is effective
 * Use `ai-dev-os-report` periodically to identify patterns
 
 ## 5.3 When AI Cannot Follow a Rule
+
 If AI consistently fails to follow a specific guideline:
+
 1. Clarify the rule wording — make it more specific and actionable
 2. Add a minimal inline code example (❌/✅, 1-3 lines) if the rule is ambiguous
 3. Add the rule to the project's checklist template
@@ -168,7 +186,7 @@ If AI consistently fails to follow a specific guideline:
 
 [Benchmark data](https://github.com/yunbow/ai-dev-os-benchmark) shows that guideline **specificity** — not quantity — determines AI compliance. Vague rules are ignored; specific rules achieve 100% compliance.
 
-### Rules for writing rules:
+### Rules for writing rules
 
 | Principle | Bad (0% compliance) | Good (100% compliance) |
 |-----------|---------------------|------------------------|
@@ -178,14 +196,14 @@ If AI consistently fails to follow a specific guideline:
 | **Show the anti-pattern** | "Use proper naming" | "❌ `handleDelete` ✅ `handleTaskDelete` (MUST include noun)" |
 | **Use MUST/SHOULD keywords** | "Consider using..." | "MUST validate on BOTH client and server using `zodResolver`" |
 
-### What NOT to include in guidelines:
+### What NOT to include in guidelines
 
 * General best practices the AI already knows (basic error handling, standard naming, RESTful API design)
 * Large Before/After code sections (benchmark shows no improvement, +55% tokens wasted)
 * YAML frontmatter or structured metadata (benchmark shows no improvement, +33% tokens wasted)
 * Abstract principles without concrete implementation guidance
 
-### The "generate → check → fix" workflow:
+### The "generate → check → fix" workflow
 
 Guidelines alone produce near-zero improvement in total code quality scores. The primary quality mechanism is **post-generation verification** via `/ai-dev-os-check`:
 
@@ -196,13 +214,16 @@ Guidelines alone produce near-zero improvement in total code quality scores. The
 5. This workflow scores 96.9/100 in benchmarks
 
 ## 5.5 Rule Suppression (Escape Hatch)
+
 When a specific guideline rule is not applicable to a particular module or file, suppress it explicitly rather than ignoring it silently:
 
 * **Project-level suppression**: Add a `project-specific/` guideline that overrides the rule for specific directories or modules. The Specificity Cascade ensures project-specific rules take precedence over common rules.
 * **File-level suppression**: Add a comment at the top of the file explaining why a rule does not apply:
-  ```
+
+  ```typescript
   // ai-dev-os-ignore: rule-name — reason for suppression
   ```
+
 * **Documentation**: All suppressions MUST include a reason. Undocumented suppressions should be flagged by `ai-dev-os-scan`.
 
 This is analogous to `// eslint-disable-next-line` or `# noqa` — every project has legitimate exceptions.

@@ -1,9 +1,11 @@
 # Project Structure Guidelines
+
 This document defines the directory layout and architecture guidelines for Node.js CLI tool projects.
 
 ---
 
-# 1. Overall Principles
+## 1. Overall Principles
+
 - Adopt **module-based (domain-based) structure**
   - Group types / services / utils per functional domain
 - **Separate CLI layer from core logic**
@@ -13,9 +15,9 @@ This document defines the directory layout and architecture guidelines for Node.
 
 ---
 
-# 2. Directory Structure
+## 2. Directory Structure
 
-```
+```text
 src/
 ├─ cli/                      # CLI entry point (argument parsing, process control)
 │  └─ index.ts               # #!/usr/bin/env node — Commander setup & subcommands
@@ -68,13 +70,13 @@ docs/
 
 ---
 
-# 3. Module Design
+## 3. Module Design
 
 ## 3.1 Internal Structure of a Module
 
 Select subdirectories based on the scale of the module. Not all are required.
 
-```
+```text
 {module}/
 ├─ index.ts                  # Public API (re-exports)
 ├─ {feature}.ts              # Feature implementation
@@ -86,13 +88,15 @@ Select subdirectories based on the scale of the module. Not all are required.
 ## 3.2 Structure Examples by Scale
 
 **Small module** (config, cache):
-```
+
+```text
 config/
 └─ index.ts                  # Resolve + defaults in a single file
 ```
 
 **Medium module** (preprocessor, reporter):
-```
+
+```text
 reporter/
 ├─ index.ts                  # Entry: generateAllReports()
 ├─ base.ts                   # Shared reporter helper
@@ -102,7 +106,8 @@ reporter/
 ```
 
 **Large module** (collector with multiple strategies):
-```
+
+```text
 collector/
 ├─ index.ts                  # Entry: collect()
 ├─ web.ts                    # Web scraping (Playwright)
@@ -114,16 +119,18 @@ collector/
 
 ---
 
-# 4. Dependency Rules
+## 4. Dependency Rules
 
 ## 4.1 Allowed Dependencies
-```
+
+```text
 cli/ → pipeline/ → {domain modules} → utils/, types/, config/
                  → cache/
                  → extensions/
 ```
 
 ## 4.2 Prohibited Practices
+
 - **Cross-domain module dependencies are prohibited** — if two modules need shared logic, extract it to `utils/`
 - **utils/ → domain module dependencies are prohibited**
 - **Domain modules → cli/ dependencies are prohibited** — core logic must work without CLI
@@ -131,9 +138,10 @@ cli/ → pipeline/ → {domain modules} → utils/, types/, config/
 
 ---
 
-# 5. CLI Layer Separation (Strict)
+## 5. CLI Layer Separation (Strict)
 
 The `cli/` directory is **strictly limited** to:
+
 - Argument parsing and validation (Commander setup)
 - Configuration resolution
 - Orchestrator invocation
@@ -152,7 +160,7 @@ process.exit(results.some(r => !r.success) ? 1 : 0);
 
 ---
 
-# 6. Library Export Pattern
+## 6. Library Export Pattern
 
 `src/index.ts` exports the public API for programmatic usage:
 
@@ -167,7 +175,7 @@ This allows the tool to be used as both a CLI and an importable library.
 
 ---
 
-# 7. Test Organization
+## 7. Test Organization
 
 | Location | Purpose |
 |----------|---------|
@@ -181,7 +189,7 @@ This allows the tool to be used as both a CLI and an importable library.
 
 ---
 
-# 8. Guidelines Summary
+## 8. Guidelines Summary
 
 - **Module-based structure is the default**
 - **CLI layer is a thin wrapper — no business logic**

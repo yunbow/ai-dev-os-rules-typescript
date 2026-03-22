@@ -6,11 +6,11 @@ This document defines how to design configuration resolution, defaults, and vali
 
 ---
 
-# 1. Configuration Resolution Order
+## 1. Configuration Resolution Order
 
 Configuration is resolved in priority order (higher number wins):
 
-```
+```text
 1. Default values (hardcoded)
 2. Configuration file (e.g., tool.config.json)
 3. Environment variables
@@ -31,7 +31,7 @@ function resolveConfig(cliOptions: CliOptions): Config {
 
 ---
 
-# 2. Default Configuration
+## 2. Default Configuration
 
 Define all defaults in a single, exported constant:
 
@@ -49,13 +49,14 @@ export const DEFAULT_CONFIG: Config = {
 ```
 
 ### Rules
+
 - Every config field **must** have a default value
 - Defaults should produce a **working configuration** with minimal user input
 - Export `DEFAULT_CONFIG` for use in tests and documentation
 
 ---
 
-# 3. Configuration File
+## 3. Configuration File
 
 ## 3.1 File Format
 
@@ -106,16 +107,17 @@ if (!parsed.success) {
 
 ---
 
-# 4. Environment Variables
+## 4. Environment Variables
 
 ## 4.1 Naming Convention
 
-```
+```text
 {TOOL_NAME}_{SETTING} in SCREAMING_SNAKE_CASE
 ```
 
 Example:
-```
+
+```bash
 MY_TOOL_OUTPUT_DIR=./reports
 MY_TOOL_VERBOSE=true
 MY_TOOL_CACHE_TTL=48h
@@ -134,7 +136,7 @@ function envOverrides(): Partial<Config> {
 
 ---
 
-# 5. Derived Configuration
+## 5. Derived Configuration
 
 Some values are computed from resolved configuration:
 
@@ -158,7 +160,7 @@ function deriveConfig(config: Config): Config {
 
 ---
 
-# 6. Type Definitions
+## 6. Type Definitions
 
 Define a single `Config` type used throughout the application:
 
@@ -187,13 +189,14 @@ interface Config {
 ```
 
 ### Rules
+
 - Use a **single config type** — avoid splitting into multiple config objects
 - Optional fields use `?` — required fields have defaults
 - Use **union types** for constrained values (not raw strings)
 
 ---
 
-# 7. Summary
+## 7. Summary
 
 - **Resolution order: defaults → file → env → CLI** (CLI wins)
 - **Every field has a default** — minimal input produces a working config

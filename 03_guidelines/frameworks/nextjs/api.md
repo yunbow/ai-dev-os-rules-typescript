@@ -1,10 +1,12 @@
 # API Design Guidelines
+
 This chapter summarizes how to design and divide responsibilities between **Route Handlers (app/api/)** and
 Server Actions in Next.js large-scale applications.
 
 ---
 
-# 1. API Design Basic Principles
+## 1. API Design Basic Principles
+
 In Next.js App Router, the following two types are used depending on the use case.
 
 * **Route Handler (app/api/*/route.ts)**
@@ -13,6 +15,7 @@ In Next.js App Router, the following two types are used depending on the use cas
   → Server methods called from pages and components (forms / internal processing)
 
 As a general rule:
+
 * External clients (mobile apps / Webhooks / other services)
   → **Use Route Handlers**
 * Internal UI events (form submissions / Mutations)
@@ -21,13 +24,13 @@ As a general rule:
 
 ---
 
-# 2. Route Handlers (REST API) Design Guidelines
+## 2. Route Handlers (REST API) Design Guidelines
 
 Place APIs in `app/api/**/route.ts`.
 
 ## 2.1 Directory Structure (Example)
 
-```
+```text
 app/
 └─ api/
    ├─ auth/
@@ -44,7 +47,7 @@ app/
 
 ---
 
-# 3. Role Separation: Route Handler vs Server Actions
+## 3. Role Separation: Route Handler vs Server Actions
 
 | Use Case | Route Handler | Server Actions |
 | --- | --- | --- |
@@ -57,7 +60,7 @@ app/
 
 ---
 
-# 4. Validation Policy (Zod)
+## 4. Validation Policy (Zod)
 
 Schema validation with **Zod** is required for both Route Handlers and Server Actions.
 
@@ -74,12 +77,14 @@ const schema = z.object({
 
 ---
 
-# 5. Server Actions Characteristics and Implementation Guidelines
+## 5. Server Actions Characteristics and Implementation Guidelines
+
 Server Actions are treated as **UI-coupled** server logic.
 
 ---
 
 ## 5.1 Security: Zod Validation is Required
+>
 > Since form values can be tampered with on the client side,
 > **Zod validation immediately after Action function execution is required**
 
@@ -101,6 +106,7 @@ export async function createPostAction(prevState: any, formData: FormData) {
 ---
 
 ## 5.2 UI Integration (form / useFormState / useFormStatus)
+
 * Can be directly bound to `<form action={serverAction}>`
 * With `useFormState` and `useFormStatus`,
 
@@ -112,7 +118,7 @@ export async function createPostAction(prevState: any, formData: FormData) {
 
 ---
 
-# 6. Route Handler Security
+## 6. Route Handler Security
 
 Route Handlers receive external access, so
 **security header application is required**.
@@ -137,7 +143,7 @@ return new Response(JSON.stringify(data), {
 
 ---
 
-# 7. Authentication (NextAuth.js)
+## 7. Authentication (NextAuth.js)
 
 ## 7.1 Route Handler Case
 
@@ -162,7 +168,7 @@ export async function GET() {
 
 ---
 
-# 8. Error Handling
+## 8. Error Handling
 
 > **Reference:** For error classification, HTTP status details, and user-facing messages, see common/error-handling.md
 > **Reference:** For the Server Actions ActionResult pattern, see frameworks/nextjs/server-actions.md
@@ -200,23 +206,27 @@ Determine success/failure by the `success` flag, not HTTP status.
 
 ---
 
-# 9. External Integration (Webhook / External API / RSS)
+## 9. External Integration (Webhook / External API / RSS)
 
 ### Payment Service Webhooks
+
 * Use Route Handlers only (Server Actions not allowed)
 * Place in `app/api/webhooks/{service}/route.ts`
 * Signature verification must be implemented
 
 ### External APIs (AI services, etc.)
+
 * Both Route Handlers and Server Actions are acceptable
 * Authentication credentials are securely maintained on the server
 
 ### RSS
+
 * fetch within Route Handler → CORS bypass
 
 ---
 
-# 10. Cache / Revalidate
+## 10. Cache / Revalidate
+
 For public APIs:
 
 ```ts
@@ -231,7 +241,7 @@ export const dynamic = "force-dynamic";
 
 ---
 
-# 10.5 Pagination Pattern
+## 10.5 Pagination Pattern
 
 > **Reference:** For the complete implementation of `executePaginatedQuery()`, see frameworks/nextjs/server-actions.md#7
 
@@ -273,7 +283,8 @@ export async function GET(request: Request) {
 
 ---
 
-# 11. Summary
+## 11. Summary
+
 * Use **Route Handlers** for external-facing APIs
 * Use **Server Actions** for UI operations
 * **Zod validation on all inputs**
