@@ -61,8 +61,8 @@ git submodule update --remote docs/ai-dev-os
 | L1 — Filosofía | `01_philosophy/` | Principios, modelos mentales, antipatrones |
 | L2 — Criterios de decisión | `02_decision-criteria/` | Abstracción, selección tecnológica, arquitectura, errores, seguridad |
 | L3 — Directrices comunes | `03_guidelines/common/` | 13 reglas: código, nomenclatura, validación, errores, registro, seguridad, pruebas, etc. |
-| L3 — Directrices del framework | `03_guidelines/frameworks/` | [Next.js](03_guidelines/frameworks/nextjs/README.md), [Node.js CLI](03_guidelines/frameworks/nodejs-cli/README.md) |
-| Plantillas | `templates/` | [Scaffolding de Next.js](templates/nextjs/README.md) |
+| L3 — Directrices del framework | `03_guidelines/frameworks/` | [Next.js](../../../03_guidelines/frameworks/nextjs/README.md), [Node.js CLI](../../../03_guidelines/frameworks/nodejs-cli/README.md) |
+| Plantillas | `templates/` | [Scaffolding de Next.js](../../../templates/nextjs/README.md) |
 
 ## Specificity Cascade
 
@@ -117,12 +117,12 @@ ai-dev-os/
 │   │   └── i18n.md               #     Internacionalización
 │   │
 │   └── frameworks/               #   Específicos del framework (ver cada README.md)
-│       ├── nextjs/               #     → [README.md](03_guidelines/frameworks/nextjs/README.md)
-│       └── nodejs-cli/           #     → [README.md](03_guidelines/frameworks/nodejs-cli/README.md)
+│       ├── nextjs/               #     → [README.md](../../../03_guidelines/frameworks/nextjs/README.md)
+│       └── nodejs-cli/           #     → [README.md](../../../03_guidelines/frameworks/nodejs-cli/README.md)
 │
 │
 └── templates/                    # Plantillas de proyecto [Inglés]
-    └── nextjs/                   #     → [README.md](templates/nextjs/README.md)
+    └── nextjs/                   #     → [README.md](../../../templates/nextjs/README.md)
 ```
 
 </details>
