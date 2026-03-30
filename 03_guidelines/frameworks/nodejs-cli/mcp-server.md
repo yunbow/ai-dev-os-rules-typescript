@@ -75,7 +75,7 @@ const server = new Server(
 
 Tool names map to an action the AI needs to perform. Use a **verb** that describes the outcome; parameters carry the object and modifiers.
 
-```
+```text
 ✅ analyze_dimension(dimension: "business" | "ux")   — one tool, one verb
 ❌ analyze_business / analyze_ux                      — same verb, proliferates tools
 ```
@@ -148,7 +148,7 @@ Tool descriptions are **instruction documents for AI agents**, not human help te
 
 ### 3.1 Five Required Elements
 
-```
+```text
 1. What it does        — first sentence, most important
 2. When to use it      — its place in the workflow
 3. What it returns     — key fields in the response
@@ -283,7 +283,7 @@ return toolResult(
 
 For AI-delegated analysis, split the tool into two phases: one that returns the prompt+data, and one that stores the AI's result.
 
-```
+```text
 AI → tool(phase="get-prompt")    → data + prompt template returned
 AI → (runs inference)
 AI → displays result to user
@@ -353,7 +353,7 @@ Include a `next_step` hint in responses to guide the AI through sequential workf
 
 Design multi-step workflows for sequential execution. Parallel execution hides intermediate results from the user and prevents the AI from using earlier results in later steps.
 
-```
+```text
 ❌ Promise.all([analyze_business(), analyze_ux()])
    → user sees nothing until all complete; no cross-referencing possible
 
@@ -455,7 +455,7 @@ npx @modelcontextprotocol/inspector node dist/mcp/index.js
 
 When adding a tool, complete every item before merging:
 
-```
+```text
 □ Naming:       verb-first, namespaced (Section 2.1)
 □ inputSchema:  flat + enum for all choices (Section 2.2, 2.3)
 □ annotations:  readOnlyHint, idempotentHint, openWorldHint set (Section 2.4)

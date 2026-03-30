@@ -616,10 +616,11 @@ function verifyToolDefinition(tool: ToolDefinition, expectedHash: string): void 
 ```
 
 **Mitigations:**
-- Pin external MCP server / plugin versions and verify via hash/checksum
-- Validate that tool `description` fields do not contain instruction-like patterns (`"always"`, `"ignore previous"`, `"secretly"`, etc.)
-- Never grant AI tools more permissions than required (principle of least privilege, Section 1)
-- Log all tool invocations with parameters; alert on unexpected file access or external network calls
+
+* Pin external MCP server / plugin versions and verify via hash/checksum
+* Validate that tool `description` fields do not contain instruction-like patterns (`"always"`, `"ignore previous"`, `"secretly"`, etc.)
+* Never grant AI tools more permissions than required (principle of least privilege, Section 1)
+* Log all tool invocations with parameters; alert on unexpected file access or external network calls
 
 ---
 
@@ -643,8 +644,8 @@ function redactSecrets(text: string): string {
 }
 ```
 
-- Never include API keys, DB credentials, or PII in prompts, system messages, or tool response content
-- Apply the same redact rules as server-side logging (Section 9 / common/logging.md PII Redaction)
+* Never include API keys, DB credentials, or PII in prompts, system messages, or tool response content
+* Apply the same redact rules as server-side logging (Section 9 / common/logging.md PII Redaction)
 
 ---
 
@@ -652,9 +653,9 @@ function redactSecrets(text: string): string {
 
 AI / MCP related packages (e.g., `@modelcontextprotocol/sdk`, `mcp-remote`, AI SDK wrappers) have a history of rapidly-introduced CVEs.
 
-- Pin exact versions in `package.json` for all AI-related packages
-- Run `npm audit` / Dependabot on every PR (same SLA as Section 10)
-- For `mcp-remote` specifically: CVE-2025-6514 (RCE via unsanitized OAuth metadata) — upgrade to the patched version immediately if used
+* Pin exact versions in `package.json` for all AI-related packages
+* Run `npm audit` / Dependabot on every PR (same SLA as Section 10)
+* For `mcp-remote` specifically: CVE-2025-6514 (RCE via unsanitized OAuth metadata) — upgrade to the patched version immediately if used
 
 ---
 
