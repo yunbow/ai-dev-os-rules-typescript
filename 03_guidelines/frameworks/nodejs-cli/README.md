@@ -13,5 +13,6 @@ See [overview.md](./overview.md) for the full technology stack and replaceable l
 | [pipeline.md](./pipeline.md) | Pipeline Orchestration & Step Management | — |
 | [config.md](./config.md) | Configuration Resolution & Defaults | cosmiconfig, c12 |
 | [process-lifecycle.md](./process-lifecycle.md) | Exit Codes, Signals & I/O | — |
+| [mcp-server.md](./mcp-server.md) | MCP Server: Transport Constraints, Tool Design, Multi-Turn Patterns | @modelcontextprotocol/sdk |
 
 > Files marked with a replaceable library contain `[Replaceable]` notes at the top. The architectural principles remain the same regardless of the library chosen.

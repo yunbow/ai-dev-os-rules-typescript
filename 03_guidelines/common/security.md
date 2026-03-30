@@ -383,6 +383,41 @@ export function isAdminIpAllowed(clientIp: string | null): boolean
 
 ---
 
+## 3.12 Path Traversal Prevention
+
+When a tool or API endpoint accepts file paths as input (`source_path`, `output_path`, `file_name`, etc.), prevent access outside the allowed base directory:
+
+```typescript
+import path from "path";
+
+/**
+ * Resolve and validate that the given path stays within the allowed base directory.
+ * Throws if a path traversal is detected.
+ */
+function validatePath(inputPath: string, allowedBase: string): string {
+  const resolved = path.resolve(inputPath);
+  const base = path.resolve(allowedBase);
+
+  if (!resolved.startsWith(base + path.sep) && resolved !== base) {
+    throw new Error(`Path traversal detected: ${inputPath}`);
+  }
+  return resolved;
+}
+```
+
+```typescript
+// ❌ BAD: directly using user-supplied path
+const content = await fs.readFile(userSuppliedPath, "utf8");
+
+// ✅ GOOD: validate before use
+const safePath = validatePath(userSuppliedPath, process.env.DATA_DIR!);
+const content = await fs.readFile(safePath, "utf8");
+```
+
+**Apply to:** any endpoint or CLI flag that receives a file path (`--output`, `source_path`, `import_file`, etc.). Even in local CLI tools, path traversal can expose unintended files when inputs come from external sources (MCP tool args, config files, user prompts).
+
+---
+
 ## 3.11 Maintenance Mode
 
 ```typescript
@@ -530,6 +565,99 @@ if (
 
 ---
 
+---
+
+## 13. AI / LLM Integration Security
+
+As applications increasingly integrate LLM capabilities (AI APIs, MCP servers, agent workflows), new attack surfaces emerge that traditional web security does not cover. Reference: **[OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** / **[OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/)**.
+
+---
+
+### 13.1 Indirect Prompt Injection (XPIA)
+
+External content retrieved by the application (web pages, documents, API responses, database records) may contain hidden instructions that the LLM interprets as legitimate commands.
+
+```typescript
+// ❌ BAD: passing raw external content directly into a prompt
+const pageContent = await fetchWebPage(url);
+const prompt = `Summarize this page: ${pageContent}`;
+
+// ✅ GOOD: sanitize external content before injecting into prompts
+function sanitizeExternalContent(text: string, maxLength = 50_000): string {
+  return text
+    // Strip tags commonly used for instruction smuggling
+    .replace(/<\/?(?:IMPORTANT|SYSTEM|INST|s|script)[^>]*>/gi, "")
+    .replace(/<!--[\s\S]*?-->/g, "")
+    // Strip zero-width and invisible unicode characters
+    .replace(/[\u200B-\u200D\uFEFF\u00AD]/g, "")
+    .slice(0, maxLength);
+}
+
+const safeContent = sanitizeExternalContent(await fetchWebPage(url));
+const prompt = `Summarize this page: ${safeContent}`;
+```
+
+**Rule:** Treat all externally-sourced content as untrusted data — never as trusted instructions.
+
+---
+
+### 13.2 Tool / Plugin Poisoning
+
+When an AI agent can invoke tools whose definitions (name, description, schema) are loaded from external or third-party sources, those definitions can be weaponized to exfiltrate data or perform unauthorized actions.
+
+```typescript
+// ✅ Verify tool definitions before registration
+function verifyToolDefinition(tool: ToolDefinition, expectedHash: string): void {
+  const actualHash = sha256(JSON.stringify(tool));
+  if (actualHash !== expectedHash) {
+    throw new Error(`Tool definition hash mismatch for "${tool.name}". Possible tampering.`);
+  }
+}
+```
+
+**Mitigations:**
+- Pin external MCP server / plugin versions and verify via hash/checksum
+- Validate that tool `description` fields do not contain instruction-like patterns (`"always"`, `"ignore previous"`, `"secretly"`, etc.)
+- Never grant AI tools more permissions than required (principle of least privilege, Section 1)
+- Log all tool invocations with parameters; alert on unexpected file access or external network calls
+
+---
+
+### 13.3 Secret Exposure via LLM
+
+LLMs may inadvertently reproduce secrets present in their context (system prompts, tool responses, retrieved documents).
+
+```typescript
+// ✅ Redact secrets from all content before passing to LLM
+const REDACT_PATTERNS = [
+  /\b(sk-[A-Za-z0-9]{32,})/g,          // API keys
+  /\b(Bearer\s+[A-Za-z0-9\-._~+/]+=*)/g, // Bearer tokens
+  /([A-Za-z0-9+/]{40,}={0,2})/g,        // Base64-encoded secrets (heuristic)
+];
+
+function redactSecrets(text: string): string {
+  return REDACT_PATTERNS.reduce(
+    (t, pattern) => t.replace(pattern, "[REDACTED]"),
+    text
+  );
+}
+```
+
+- Never include API keys, DB credentials, or PII in prompts, system messages, or tool response content
+- Apply the same redact rules as server-side logging (Section 9 / common/logging.md PII Redaction)
+
+---
+
+### 13.4 Dependency Pinning for AI Packages
+
+AI / MCP related packages (e.g., `@modelcontextprotocol/sdk`, `mcp-remote`, AI SDK wrappers) have a history of rapidly-introduced CVEs.
+
+- Pin exact versions in `package.json` for all AI-related packages
+- Run `npm audit` / Dependabot on every PR (same SLA as Section 10)
+- For `mcp-remote` specifically: CVE-2025-6514 (RCE via unsanitized OAuth metadata) — upgrade to the patched version immediately if used
+
+---
+
 ## Summary
 
 * Authentication and authorization based on **Zero Trust principles**
@@ -540,3 +668,5 @@ if (
 * Respond to CI/CD vulnerabilities promptly based on SLAs
 * Ensure attack detection and response through logging, monitoring, and alerting
 * Comply with privacy laws and minimize user data collection
+* **Validate file paths** against an allowed base directory to prevent path traversal (Section 3.12)
+* **Sanitize all external content** before injecting into LLM prompts; treat it as untrusted data (Section 13)
