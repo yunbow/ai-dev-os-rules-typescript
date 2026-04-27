@@ -167,13 +167,17 @@ Always automate the following:
 
 * Do not use comments to explain logic
 * Only document intent, side effects, and exceptional conditions
+* JSDoc must be English (ASCII-only); `//` line comments may use the team's native language for "why" reasoning
 
 ```ts
 /**
- * Calculate order amount
- * @throws ValueError
+ * Aggregate order line items into the final amount, applying campaign discounts last.
+ * @throws DiscountValidationError When a campaign code is expired or unknown.
  */
+// 値引き順序が変わると適用上限のロジックが破綻するため、最後に適用する。
 ```
+
+For the full ruleset — JSDoc tag adoption, four templates (file header / exported function / constants / internal), lint configuration, and anti-patterns to detect — see [`comment-format.md`](./comment-format.md).
 
 ---
 

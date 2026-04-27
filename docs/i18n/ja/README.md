@@ -12,7 +12,7 @@
 
 AI Dev OS Rules は、AI コーディングアシスタントに曖昧な指示ではなく**具体的で検証可能な基準**を与えます:
 
-- **13 の共通ルール** — 命名、エラーハンドリング、セキュリティ、テスト、ロギング、i18n など
+- **14 の共通ルール** — 命名、エラーハンドリング、セキュリティ、テスト、ロギング、i18n、コメント書式 など
 - **フレームワーク固有ルール** — Next.js App Router パターン、Server Actions、API 設計
 - **競合解決が組み込み** — Specificity Cascade がルール優先度を自動的に解決
 - **バージョン管理・監査可能** — タグに固定、差分確認、PR でレビュー
@@ -60,7 +60,7 @@ git submodule update --remote docs/ai-dev-os
 |---------|------|------|
 | L1 — 設計思想 | `01_philosophy/` | 原則、メンタルモデル、アンチパターン |
 | L2 — 判断基準 | `02_decision-criteria/` | 抽象化、技術選定、アーキテクチャ、エラー、セキュリティ |
-| L3 — 共通ガイドライン | `03_guidelines/common/` | 13 ルール: コード、命名、バリデーション、エラー、ロギング、セキュリティ、テスト等 |
+| L3 — 共通ガイドライン | `03_guidelines/common/` | 14 ルール: コード、命名、バリデーション、エラー、ロギング、セキュリティ、テスト、コメント書式等 |
 | L3 — FW ガイドライン | `03_guidelines/frameworks/` | [Next.js](../../../03_guidelines/frameworks/nextjs/README.md)、[Node.js CLI](../../../03_guidelines/frameworks/nodejs-cli/README.md) |
 | テンプレート | `templates/` | [Next.js スキャフォールディング](../../../templates/nextjs/README.md) |
 
@@ -103,6 +103,7 @@ ai-dev-os/
 ├── 03_guidelines/                # ガイドライン [英語]
 │   ├── common/                   #   共通（言語・FW 非依存）
 │   │   ├── code.md               #     コーディング規約
+│   │   ├── comment-format.md     #     コメント書式（JSDoc 英語 / 行コメは母国語可）
 │   │   ├── naming.md             #     命名規則
 │   │   ├── validation.md         #     バリデーション
 │   │   ├── error-handling.md     #     エラーハンドリング

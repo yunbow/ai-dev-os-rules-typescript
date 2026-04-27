@@ -12,7 +12,7 @@
 
 AI Dev OS Rules give your AI coding assistant **concrete, verifiable standards** instead of vague instructions:
 
-- **13 common rules** — Naming, error handling, security, testing, logging, i18n, and more
+- **14 common rules** — Naming, error handling, security, testing, logging, i18n, comment format, and more
 - **Framework-specific rules** — Next.js App Router patterns, Server Actions, API design
 - **Conflict resolution built-in** — Specificity Cascade resolves rule priority automatically
 - **Versioned & auditable** — Pin to a tag, diff changes, review in PRs
@@ -60,7 +60,7 @@ git submodule update --remote docs/ai-dev-os
 |-------|------|----------|
 | L1 — Philosophy | `01_philosophy/` | Principles, mental models, anti-patterns |
 | L2 — Decision Criteria | `02_decision-criteria/` | Abstraction, tech selection, architecture, errors, security |
-| L3 — Common Guidelines | `03_guidelines/common/` | 13 rules: code, naming, validation, errors, logging, security, testing, etc. |
+| L3 — Common Guidelines | `03_guidelines/common/` | 14 rules: code, naming, validation, errors, logging, security, testing, comment format, etc. |
 | L3 — Framework Guidelines | `03_guidelines/frameworks/` | [Next.js](03_guidelines/frameworks/nextjs/README.md), [Node.js CLI](03_guidelines/frameworks/nodejs-cli/README.md) |
 | Templates | `templates/` | [Next.js scaffolding](templates/nextjs/README.md) |
 
@@ -103,6 +103,7 @@ ai-dev-os/
 ├── 03_guidelines/                # Guidelines [EN]
 │   ├── common/                   #   Common (Language/FW Independent)
 │   │   ├── code.md               #     Coding Standards
+│   │   ├── comment-format.md     #     Comment Format (JSDoc English / line comments native)
 │   │   ├── naming.md             #     Naming Conventions
 │   │   ├── validation.md         #     Validation
 │   │   ├── error-handling.md     #     Error Handling

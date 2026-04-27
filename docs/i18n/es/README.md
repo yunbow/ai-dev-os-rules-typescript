@@ -12,7 +12,7 @@
 
 AI Dev OS Rules proporcionan a su asistente de codificación IA **estándares concretos y verificables** en lugar de instrucciones vagas:
 
-- **13 reglas comunes** — Nomenclatura, manejo de errores, seguridad, pruebas, registro, i18n y más
+- **14 reglas comunes** — Nomenclatura, manejo de errores, seguridad, pruebas, registro, i18n, formato de comentarios y más
 - **Reglas específicas del framework** — Patrones de Next.js App Router, Server Actions, diseño de API
 - **Resolución de conflictos integrada** — Specificity Cascade resuelve la prioridad de reglas automáticamente
 - **Versionado y auditable** — Fijar a una etiqueta, ver diferencias, revisar en PRs
@@ -60,7 +60,7 @@ git submodule update --remote docs/ai-dev-os
 |------|------|-----------|
 | L1 — Filosofía | `01_philosophy/` | Principios, modelos mentales, antipatrones |
 | L2 — Criterios de decisión | `02_decision-criteria/` | Abstracción, selección tecnológica, arquitectura, errores, seguridad |
-| L3 — Directrices comunes | `03_guidelines/common/` | 13 reglas: código, nomenclatura, validación, errores, registro, seguridad, pruebas, etc. |
+| L3 — Directrices comunes | `03_guidelines/common/` | 14 reglas: código, nomenclatura, validación, errores, registro, seguridad, pruebas, formato de comentarios, etc. |
 | L3 — Directrices del framework | `03_guidelines/frameworks/` | [Next.js](../../../03_guidelines/frameworks/nextjs/README.md), [Node.js CLI](../../../03_guidelines/frameworks/nodejs-cli/README.md) |
 | Plantillas | `templates/` | [Scaffolding de Next.js](../../../templates/nextjs/README.md) |
 
@@ -103,6 +103,7 @@ ai-dev-os/
 ├── 03_guidelines/                # Directrices [Inglés]
 │   ├── common/                   #   Comunes (independientes de lenguaje/FW)
 │   │   ├── code.md               #     Estándares de codificación
+│   │   ├── comment-format.md     #     Formato de comentarios (JSDoc inglés / línea: nativo)
 │   │   ├── naming.md             #     Convenciones de nomenclatura
 │   │   ├── validation.md         #     Validación
 │   │   ├── error-handling.md     #     Manejo de errores

@@ -12,7 +12,7 @@
 
 AI Dev OS Rules는 AI 코딩 어시스턴트에게 모호한 지시 대신 **구체적이고 검증 가능한 기준**을 제공합니다:
 
-- **13개 공통 규칙** — 명명, 에러 처리, 보안, 테스트, 로깅, i18n 등
+- **14개 공통 규칙** — 명명, 에러 처리, 보안, 테스트, 로깅, i18n, 주석 형식 등
 - **프레임워크별 규칙** — Next.js App Router 패턴, Server Actions, API 설계
 - **충돌 해결 내장** — Specificity Cascade가 규칙 우선순위를 자동으로 해결
 - **버전 관리 및 감사 가능** — 태그에 고정, 차이점 확인, PR에서 리뷰
@@ -60,7 +60,7 @@ git submodule update --remote docs/ai-dev-os
 |--------|------|------|
 | L1 — 설계 철학 | `01_philosophy/` | 원칙, 멘탈 모델, 안티패턴 |
 | L2 — 판단 기준 | `02_decision-criteria/` | 추상화, 기술 선정, 아키텍처, 에러, 보안 |
-| L3 — 공통 가이드라인 | `03_guidelines/common/` | 13개 규칙: 코드, 명명, 유효성 검사, 에러, 로깅, 보안, 테스트 등 |
+| L3 — 공통 가이드라인 | `03_guidelines/common/` | 14개 규칙: 코드, 명명, 유효성 검사, 에러, 로깅, 보안, 테스트, 주석 형식 등 |
 | L3 — FW 가이드라인 | `03_guidelines/frameworks/` | [Next.js](../../../03_guidelines/frameworks/nextjs/README.md), [Node.js CLI](../../../03_guidelines/frameworks/nodejs-cli/README.md) |
 | 템플릿 | `templates/` | [Next.js 스캐폴딩](../../../templates/nextjs/README.md) |
 
@@ -103,6 +103,7 @@ ai-dev-os/
 ├── 03_guidelines/                # 가이드라인 [영어]
 │   ├── common/                   #   공통 (언어/FW 독립)
 │   │   ├── code.md               #     코딩 규약
+│   │   ├── comment-format.md     #     주석 형식 (JSDoc 영어 / 라인 주석 모국어 가능)
 │   │   ├── naming.md             #     명명 규칙
 │   │   ├── validation.md         #     유효성 검사
 │   │   ├── error-handling.md     #     에러 처리

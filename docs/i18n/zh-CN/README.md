@@ -12,7 +12,7 @@
 
 AI Dev OS Rules 为您的 AI 编码助手提供**具体、可验证的标准**，而非模糊的指令：
 
-- **13 条通用规则** — 命名、错误处理、安全、测试、日志、i18n 等
+- **14 条通用规则** — 命名、错误处理、安全、测试、日志、i18n、注释格式 等
 - **框架特定规则** — Next.js App Router 模式、Server Actions、API 设计
 - **内置冲突解决** — Specificity Cascade 自动解决规则优先级
 - **版本化且可审计** — 固定到标签、查看差异、在 PR 中审查
@@ -60,7 +60,7 @@ git submodule update --remote docs/ai-dev-os
 |------|------|------|
 | L1 — 设计哲学 | `01_philosophy/` | 原则、思维模型、反模式 |
 | L2 — 决策标准 | `02_decision-criteria/` | 抽象化、技术选型、架构、错误、安全 |
-| L3 — 通用指南 | `03_guidelines/common/` | 13 条规则：代码、命名、验证、错误、日志、安全、测试等 |
+| L3 — 通用指南 | `03_guidelines/common/` | 14 条规则：代码、命名、验证、错误、日志、安全、测试、注释格式等 |
 | L3 — 框架指南 | `03_guidelines/frameworks/` | [Next.js](../../../03_guidelines/frameworks/nextjs/README.md)、[Node.js CLI](../../../03_guidelines/frameworks/nodejs-cli/README.md) |
 | 模板 | `templates/` | [Next.js 脚手架](../../../templates/nextjs/README.md) |
 
@@ -103,6 +103,7 @@ ai-dev-os/
 ├── 03_guidelines/                # 指南 [英语]
 │   ├── common/                   #   通用（语言/框架无关）
 │   │   ├── code.md               #     编码规范
+│   │   ├── comment-format.md     #     注释格式（JSDoc 英语 / 行注释可用母语）
 │   │   ├── naming.md             #     命名规则
 │   │   ├── validation.md         #     验证
 │   │   ├── error-handling.md     #     错误处理
